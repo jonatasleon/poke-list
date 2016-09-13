@@ -6,6 +6,7 @@ Essa apostila mostra o desenvolvimento passo-a-passo de um aplicação demo de u
 Ao abrir o Android Studio, uma tela de boas-vindas será exibida(Figura 1), clique em *Start a new Android Studio Project*.
 
 ![Tela Welcome](./images/welcome.png)
+
 <sub>**Figura 1** - Tela Welcome</sub>
 
 Agora na tela de criação de um novo projeto(Figura 2), insira o nome da aplicação (*Application name*), um domínio(*Company Domain*), para exemplo coloque seu nome seguido de *.com*, e ao final escolha onde ficará a pasta do projeto(*Projeto Location*), clique em Next.
