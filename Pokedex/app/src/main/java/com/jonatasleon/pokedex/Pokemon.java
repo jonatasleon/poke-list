@@ -40,6 +40,19 @@ public class Pokemon {
     @SerializedName("types")
     private List<PokeType> pokeTypes = new ArrayList<>();
 
+    public Pokemon(String name, Integer attack, Integer defense, String height, Integer health, Integer pokedexId, Integer speed, String weight, List<Sprite> sprites, List<PokeType> pokeTypes) {
+        this.name = name;
+        this.attack = attack;
+        this.defense = defense;
+        this.height = height;
+        this.health = health;
+        this.pokedexId = pokedexId;
+        this.speed = speed;
+        this.weight = weight;
+        this.sprites = sprites;
+        this.pokeTypes = pokeTypes;
+    }
+
     public String getName() {
         return name;
     }
