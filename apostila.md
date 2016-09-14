@@ -1,6 +1,6 @@
 # Apostila
 
-Essa apostila mostra o desenvolvimento passo-a-passo de um aplicação demo de um lista de Pokemons. A função principal do aplicativo será consumir a API [PokeAPI](https://pokeapi.co), que se trata de uma API sobre Pokemons destinada a fins educacionais e gratuita.
+Essa apostila mostra o desenvolvimento passo-a-passo de um aplicação demo de um lista de Pokemons. A função principal do aplicativo será consumir a API [PokéAPI](https://pokeapi.co), que se trata de uma API sobre Pokemons destinada a fins educacionais e gratuita.
 
 ## Criando projeto no Android Studio
 Ao abrir o Android Studio, uma tela de boas-vindas será exibida(Figura 1), clique em *Start a new Android Studio Project*.
@@ -367,3 +367,7 @@ Ao executar o aplicativo, o resultado esperado seria uma lista com os 3 Pokemons
 ![Resultado esperado](./images/app_resultado_01.png)
 
 <sub>**Figura 12** - Resultado Esperado</sub>
+
+## Buscando dados na PokéAPI
+
+Agora vamos começar a trazer os dados diretamente da API
