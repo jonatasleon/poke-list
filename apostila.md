@@ -371,3 +371,211 @@ Ao executar o aplicativo, o resultado esperado seria uma lista com os 3 Pokemons
 ## Buscando dados na PokéAPI
 
 Agora vamos começar a trazer os dados diretamente da API
+
+Fazendo uma requisição no endereço <http://pokeapi.co/api/v1/pokemon/1/>, temos os dados do *Bulbasaur*, de todas a informações enviadas pela API, vamos utilizar o seguinte objeto como exemplo:
+
+```json
+{
+  "attack": 49,
+  "defense": 49,
+  "height": "7",
+  "hp": 45,
+  "name": "Bulbasaur",
+  "pkdx_id": 1,
+  "speed": 45,
+  "sprites": [
+    {
+      "name": "bulbasaur",
+      "resource_uri": "/api/v1/sprite/1/"
+    },
+    {
+      "name": "bulbasaur",
+      "resource_uri": "/api/v1/sprite/2/"
+    },
+    {
+      "name": "bulbasaur",
+      "resource_uri": "/api/v1/sprite/720/"
+    }
+  ],
+  "types": [
+    {
+      "name": "poison",
+      "resource_uri": "/api/v1/type/4/"
+    },
+    {
+      "name": "grass",
+      "resource_uri": "/api/v1/type/12/"
+    }
+  ],
+  "weight": "69"
+}
+```
+
+<sub>**Código 9** - Objeto base</sub>
+
+A partir deste objeto, começamos a modificar no modelo de Pokemon e criar duas novas classes *PokeType* e *Sprite*
+
+```java
+package com.jonatasleon.pokedex;
+
+import com.google.gson.annotations.SerializedName;
+
+public class PokeType {
+
+    @SerializedName("name")
+    private String name;
+
+    public PokeType(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+```
+
+<sub>**Código 10** - PokeType.java</sub>
+
+```java
+package com.jonatasleon.pokedex;
+
+import com.google.gson.annotations.SerializedName;
+
+public class Sprite {
+
+    @SerializedName("name")
+    private String name;
+
+    public Sprite(String name) {
+
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+```
+
+<sub>**Código 11** - Sprite.java</sub>
+
+As declarações dos atributos da classe Pokemon serão alteradas, consequemente seus getters e setters também. Os atributos ficarão definidos assim(em caso de dúvida, veja o código completo em <http://bit.ly/2cHL0np>):
+
+```java
+package com.jonatasleon.pokedex;
+
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Pokemon {
+
+    @SerializedName("name")
+    private String name;
+
+    @SerializedName("attack")
+    private Integer attack;
+
+    @SerializedName("defense")
+    private Integer defense;
+
+    @SerializedName("height")
+    private String height;
+
+    @SerializedName("hp")
+    private Integer health;
+
+    @SerializedName("pkdx_id")
+    private Integer pokedexId;
+
+    @SerializedName("speed")
+    private Integer speed;
+
+    @SerializedName("weight")
+    private String weight;
+
+    @SerializedName("sprites")
+    private List<Sprite> sprites = new ArrayList<>();
+
+    @SerializedName("types")
+    private List<PokeType> pokeTypes = new ArrayList<>();
+
+    /*
+     * O construtor e os getters e setters aqui
+     */
+
+}
+```
+
+<sub>**Código 12** - Alterações em Pokemon.java</sub>
+
+Neste momento, classes como MainActivity e PokemonAdapter podem estar apontando algum erro, não vamos nos preocupar com isso agora, isso se deve pela alteração que fizemos no model Pokemon.
+
+Criaremos agora nossa instância da Api: **ApiClient.java**
+
+```java
+package com.jonatasleon.pokedex;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class ApiClient {
+
+    public static final String BASE_URL = "http://pokeapi.co/api/v1/";
+    private static Retrofit retrofit = null;
+
+    public static Retrofit getClient() {
+        if(retrofit == null) {
+            retrofit = new Retrofit.Builder()
+              .baseUrl(BASE_URL)
+              .addConverterFactory(GsonConverterFactory.create())
+              .build();
+        }
+        return retrofit;
+    }
+}
+```
+
+<sub>**Código 13** - ApiClient.java</sub>
+
+Nossa ApiClient representa o cliente que fará todas as requisições na PokéAPI. Agora precisamos dizer ao ApiClient, onde ele deve buscar as informações, para criamos nossa interface ApiInterface.
+
+Para criar uma interface, siga os mesmos passos para criar uma classe, mas na tela de inserção do nome da classe, altere *class* para *interface*.
+
+![class para interface](./images/class-to-interface.png)
+
+<sub>**Figura 13** - Criando interface</sub>
+
+O código de ApiInterface.java ficará assim:
+
+```java
+package com.jonatasleon.pokedex;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+
+public interface ApiInterface {
+
+    @GET("pokemon/{id}")
+    Call<Pokemon> getPokemon(@Path("id") int id);
+}
+
+```
+
+Com isso estamos dizendo que ao chamar o método *getPokemon(int)* estamos fazendo uma requisição *GET*(ver **[HTTP methods](https://pt.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9todos_de_solicita.C3.A7.C3.A3o)**) no recurso *pokemon/{id}*, com o id que será passado como parâmetro.
+
+Agora fazer que nossas requisições apareçam como uma lista de Pokemons em no RecyclerView, também, como consequência, vamos corrigir os erros indicados em *MainActivity* e *PokemonAdapter*
