@@ -576,6 +576,6 @@ public interface ApiInterface {
 
 ```
 
-Com isso estamos dizendo que ao chamar o método *getPokemon(int)* estamos fazendo uma requisição *GET*(ver **[HTTP methods](https://pt.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9todos_de_solicita.C3.A7.C3.A3o)**) no recurso *pokemon/{id}*, com o id que será passado como parâmetro.
+Com isso estamos dizendo que ao chamar o método *getPokemon(int)* estamos fazendo uma requisiçãos. methods](https://pt.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9todos_de_solicita.C3.A7.C3.A3o)**) no recurso *pokemon/{id}*, com o id que será passado como parâmetro.
 
-Agora fazer que nossas requisições apareçam como uma lista de Pokemons em no RecyclerView, também, como consequência, vamos corrigir os erros indicados em *MainActivity* e *PokemonAdapter*
+Agora vamos fazer que nossas requisições apareçam como uma lista de Pokemons no RecyclerView, também, como consequência, vamos corrigir os erros apontados em *MainActivity* e *PokemonAdapter*
