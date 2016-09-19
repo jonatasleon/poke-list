@@ -5,9 +5,14 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,17 +40,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addData() {
-        Pokemon poke;
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        poke = new Pokemon("Bulbasaur", "Grama");
-        pokeList.add(poke);
+        for(int i = 1; i <= 30; i++) {
+            Call<Pokemon> call = apiService.getPokemon(i);
 
-        poke = new Pokemon("Charmander", "Fogo");
-        pokeList.add(poke);
+            Log.i("TAG", "ID: " + i);
+            call.enqueue(new Callback<Pokemon>() {
+                @Override
+                public void onResponse(Call<Pokemon> call, Response<Pokemon> response) {
+                    Pokemon pokemon = response.body();
+                    pokeList.add(pokemon);
+                    pokemonAdapter.notifyDataSetChanged();
+                }
 
-        poke = new Pokemon("Squirtle", "Água");
-        pokeList.add(poke);
+                @Override
+                public void onFailure(Call<Pokemon> call, Throwable t) {
 
-        pokemonAdapter.notifyDataSetChanged();
+                }
+            });
+        }
     }
 }
