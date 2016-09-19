@@ -576,6 +576,70 @@ public interface ApiInterface {
 
 ```
 
-Com isso estamos dizendo que ao chamar o método *getPokemon(int)* estamos fazendo uma requisiçãos. methods](https://pt.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9todos_de_solicita.C3.A7.C3.A3o)**) no recurso *pokemon/{id}*, com o id que será passado como parâmetro.
+<sub>**Código 14** - ApiInterface.java</sub>
 
-Agora vamos fazer que nossas requisições apareçam como uma lista de Pokemons no RecyclerView, também, como consequência, vamos corrigir os erros apontados em *MainActivity* e *PokemonAdapter*
+Com isso estamos dizendo que ao chamar o método *getPokemon(int)* estamos fazendo uma requisição GET (ver **[Métodos HTTP](https://pt.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9todos_de_solicita.C3.A7.C3.A3o)**) no recurso *pokemon/{id}*, com o id que será passado como parâmetro.
+
+Agora vamos fazer que nossas requisições apareçam como uma lista de Pokemons no RecyclerView, também, como consequência, vamos corrigir os erros apontados em *MainActivity* e *PokemonAdapter*.
+
+Para isso, vamos criar um novo método que colocar todos os *names* de *PokeTypes* em uma única *String*. Abra o arquivo Pokemon e adicione o método *pokeTypesToString*
+
+```java
+  public String pokeTypesToString() {
+    String types = "";
+    for (int i = 0; i < pokeTypes.size(); i++) {
+        if(i > 0)
+            types += ", ";
+        types += pokeTypes.get(i).getName();
+    }
+
+    return types;
+  }
+```
+
+<sub>**Código 15** - Método pokeTypesToString</sub>
+
+Agora modifique o método *onBindViewHolder* na classe *PokemonAdapter*
+
+```java
+  @Override
+  public void onBindViewHolder(PokeViewHolder holder, int position) {
+    Pokemon pokemon = pokeList.get(position);
+    holder.name.setText(pokemon.getName());
+    holder.type.setText(pokemon.pokeTypesToString());
+  }
+```
+
+<sub>**Código 16** - Método onBindViewHolder</sub>
+
+Agora temos modificar nosso método *addData* na classe *MainActivity*
+
+```java
+  private void addData() {
+    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+    for(int i = 1; i <= 30; i++) {
+      Call<Pokemon> call = apiService.getPokemon(i);
+      call.enqueue(new Callback<Pokemon>() {
+        @Override
+        public void onResponse(Call<Pokemon> call, Response<Pokemon> response) {
+          Pokemon pokemon = response.body();
+          pokeList.add(pokemon);
+          pokemonAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onFailure(Call<Pokemon> call, Throwable t) {
+        }
+      });
+    }
+  }
+```
+
+<sub>**Código 17** - Método addData</sub>
+
+Execute o projeto, dependendo da disponibilidade da API, os dados dos 30 primeiros Pokemons irão ser exibidos em nosso *RecyclerView*, assim
+
+![Pokemons API](./images/lista-api.png)
+
+<sub>**Figura 14** - Pokemons API</sub>
