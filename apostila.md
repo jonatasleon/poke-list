@@ -196,7 +196,7 @@ Abra o arquivo **pokemon_row.xml** e deixe-o assim:
 
     <TextView
         android:id="@+id/tv_type"
-        android:layout_below="@id/name"
+        android:layout_below="@id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
