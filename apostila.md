@@ -623,9 +623,20 @@ Agora temos modificar nosso método *addData* na classe *MainActivity*
       call.enqueue(new Callback<Pokemon>() {
         @Override
         public void onResponse(Call<Pokemon> call, Response<Pokemon> response) {
-          Pokemon pokemon = response.body();
-          pokeList.add(pokemon);
-          pokemonAdapter.notifyDataSetChanged();
+            if(response.isSuccessful()) {
+                Pokemon pokemon = response.body();
+
+                pokemons.add(pokemon);
+                pokemonAdapter.notifyDataSetChanged();
+
+                Log.i("POKEMON", "Name: " + pokemon.getName());
+                Log.i("POKEMON", "Attack: " + pokemon.getAttack());
+                Log.i("POKEMON", "Defense: " + pokemon.getDefense());
+                Log.i("POKEMON", "Health: " + pokemon.getHealth());
+                Log.i("POKEMON", "Height: " + pokemon.getHeight());
+                Log.i("POKEMON", "Weight: " + pokemon.getWeight());
+
+            }
         }
 
         @Override
