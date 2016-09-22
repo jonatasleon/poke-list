@@ -1043,3 +1043,56 @@ Código de *detail_activity*
 
 </RelativeLayout>
 ```
+
+prepareData method
+
+```java
+private void prepareData(int id) {
+        final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<Pokemon> call = apiService.getPokemon(id);
+        call.enqueue(new Callback<Pokemon>() {
+            @Override
+            public void onResponse(Call<Pokemon> call, Response<Pokemon> response) {
+                Pokemon pokemon;
+
+                if(response.isSuccessful()) {
+                    pokemon = response.body();
+
+                    tvName.setText(pokemon.getName());
+                    tvTypes.setText(pokemon.typesToString());
+                    tvAttack.setText(pokemon.getAttack().toString());
+                    tvDefense.setText(pokemon.getDefense().toString());
+                    tvSpeed.setText(pokemon.getSpeed().toString());
+
+                    Call<SpriteResponse> callSprite;
+                    Sprite sprite = pokemon.getSprites().get(0);
+                    callSprite = apiService.getSprite(sprite.getResourceUri());
+                    callSprite.enqueue(new Callback<SpriteResponse>() {
+                        @Override
+                        public void onResponse(Call<SpriteResponse> call, Response<SpriteResponse> response) {
+                            SpriteResponse spriteResponse;
+                            if(response.isSuccessful()) {
+                                spriteResponse = response.body();
+                                Picasso.with(ivPokemon.getContext())
+                                        .load("http://pokeapi.co" + spriteResponse.getImage())
+                                        .resize(128,128)
+                                        .into(ivPokemon);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<SpriteResponse> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Pokemon> call, Throwable t) {
+
+            }
+        });
+    }
+```
