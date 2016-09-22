@@ -534,7 +534,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL = "http://pokeapi.co/api/v1/";
+    public static final String BASE_URL = "http://pokeapi.co/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
@@ -570,7 +570,7 @@ import retrofit2.http.Path;
 
 public interface ApiInterface {
 
-    @GET("pokemon/{id}")
+    @GET("api/v1/pokemon/{id}")
     Call<Pokemon> getPokemon(@Path("id") int id);
 }
 
@@ -654,3 +654,212 @@ Execute o projeto, dependendo da disponibilidade da API, os dados dos 30 primeir
 ![Pokemons API](./images/lista-api.png)
 
 <sub>**Figura 14** - Pokemons API</sub>
+
+## Carregando imagens
+
+Para carregar imagens no *RecyclerView* vamos utilizar a biblioteca [Picasso](http://square.github.io/picasso/). Adicione-a nas depedências do aplicativo(build.gradle)
+
+```js
+  compile 'com.squareup.picasso:picasso:2.5.2'
+```
+
+<sub>**Código 18** - Picasso</sub>
+
+Como vamos buscar as imagens a partir dos dados de uma *Sprite*, teremos que fazer um request no recurso *[sprite](http://pokeapi.co/docsv1/#sprites)*
+
+```json
+{
+  "id": 1,
+  "image": "/media/img/1383395659.12.png",
+  "name": "Bulbasaur_blue_red"
+}
+```
+
+<sub>**Código 19** - Resumo dos dados de um recurso *sprite*</sub>
+
+Assim, temos que ter uma classe que represente a resposta desta requisição, criamos então a classe *SpriteResponse*
+
+```java
+import com.google.gson.annotations.SerializedName;
+
+public class SpriteResponse {
+
+    @SerializedName("id")
+    private Integer id;
+
+    @SerializedName("image")
+    private String image;
+
+    @SerializedName("name")
+    private String name;
+
+    public SpriteResponse(Integer id, String image, String name) {
+        this.id = id;
+        this.image = image;
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+<sub>**Código 20** - Classe SpriteResponse</sub>
+
+E modificamos nossa *ApiInterface*, adicionando o método *getSprit*
+
+```java
+  @GET("{resource_uri}")
+  Call<SpriteResponse> getSprite(@Path("resource_uri") String resourceUri);
+```
+
+<sub>**Código 21** - getSprite em ApiInterface</sub>
+
+Também temos que alterar o nosso layout de **pokemon_row.xml**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:id="@+id/iv_pokemon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_pokemon"
+        android:layout_toEndOf="@+id/iv_pokemon" />
+
+    <TextView
+        android:id="@+id/tv_type"
+        android:layout_below="@id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_pokemon"
+        android:layout_toEndOf="@+id/iv_pokemon" />
+
+</RelativeLayout>
+```
+
+<sub>**Código 22** - pokemon_row.xml</sub>
+
+Agora adicionamos uma *ImageView* ao layout, então podemos mofificar nosso *PokemonAdapter* e seu *ViewHolder*
+
+```java
+public class PokeViewHolder extends RecyclerView.ViewHolder {
+    public TextView name, type;
+    public ImageView ivPokemon;
+
+    public PokeViewHolder(View itemView) {
+        super(itemView);
+        name = (TextView) itemView.findViewById(R.id.tv_name);
+        type = (TextView) itemView.findViewById(R.id.tv_type);
+        ivPokemon = (ImageView) itemView.findViewById(R.id.iv_pokemon);
+    }
+}
+```
+
+<sub>**Código 23** - Classe PokeViewHolder</sub>
+
+Agora vamos modificar o método *onBindViewHolder*
+
+```java
+@Override
+public void onBindViewHolder(final PokeViewHolder holder, int position) {
+    Pokemon pokemon = pokeList.get(position);
+    holder.name.setText(pokemon.getName());
+    holder.type.setText(pokemon.typesToString());
+
+    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+    Sprite sprite = pokemon.getSprites().get(0);
+    String spriteUrl = sprite.getResourceUri();
+
+    Call<SpriteResponse> call = apiService.getSprite(spriteUrl);
+    call.enqueue(new Callback<SpriteResponse>() {
+        @Override
+        public void onResponse(Call<SpriteResponse> call, Response<SpriteResponse> response) {
+            if(response.isSuccessful()){
+                SpriteResponse spriteResponse = response.body();
+                String image = "http://pokeapi.co" + spriteResponse.getImage();
+
+                Picasso.with(holder.ivPokemon.getContext())
+                        .load(image)
+                        .resize(64, 64)
+                        .into(holder.ivPokemon);
+            }
+        }
+
+        @Override
+        public void onFailure(Call<SpriteResponse> call, Throwable t) {
+
+        }
+    });
+}
+```
+
+<sub>**Código 24** - Refatoração onBindViewHolder</sub>
+
+Um detalhe importante aqui, observe a linha:
+
+```java
+  String spriteUrl = sprite.getResourceUri();
+```
+
+Como *getResourceUri()* retorna algo como */api/v1/sprite/1/* e nossa url base é *http://pokeapi.co/*, isso pode gerar uma *String* como *http://pokeapi.co//api/v1/sprite/1/*, assim gerando um erro em nossa requisição, para evitar isso, vamos refatorar nosso método *getResourceUri*
+
+
+```java
+public String getResourceUri() {
+    return resourceUri.substring(1);
+}
+```
+
+<sub>**Código 25** - getResourceUri refatorada</sub>
+
+Tudo ocorrendo corretamente, executando o projeto, temos como resultado
+
+![Resultado lista com imagens](./images/recycler-images.png)
+
+<sub>**Figura 15** - Resultado lista com imagens</sub>
