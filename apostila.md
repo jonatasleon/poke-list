@@ -863,3 +863,101 @@ Tudo ocorrendo corretamente, executando o projeto, temos como resultado
 ![Resultado lista com imagens](./images/recycler-images.png)
 
 <sub>**Figura 15** - Resultado lista com imagens</sub>
+
+
+## Abrindo uma nova Activity
+
+Agora, vamos abrir uma nova activity. Essa activity mostrará os detalhes do Pokemon. Crie uma nova activity chamada *DetailActivity*.
+
+Antes de alterarmos o layout da *DetailActivity*, vamos fazer que ao clicar em algum item da nossa lista, transitemos de uma activity para outra. Crie uma classe chamada *RecyclerTouchListener*.
+
+```java
+public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+    private GestureDetector gestureDetector;
+    private ClickListener clickListener;
+
+
+    public interface ClickListener {
+        void onClick(View view, int position);
+
+        void onLongClick(View view, int position);
+    }
+
+    public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
+        this.clickListener = clickListener;
+        gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child != null && clickListener != null) {
+                    clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        View child = rv.findChildViewUnder(e.getX(), e.getY());
+        if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
+            clickListener.onClick(child, rv.getChildPosition(child));
+        }
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+    }
+}
+```
+
+<sub>**Código 26** - Classe RecyclerTouchListener</sub>
+
+Agora, abaixo da linha *recyclerView.setAdapter(pokemonAdapter)*, adicione o seguinte trecho que captura o clique do botão inicia uma nova activity.
+
+```java
+recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+    @Override
+    public void onClick(View view, int position) {
+        Intent i = new Intent(MainActivity.this, DetailActivity.class);
+        i.putExtra("ID", pokemons.get(position).getPokedexId());
+        startActivity(i);
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+
+    }
+}));
+```
+
+<sub>**Código 27** - addOnItemTouchListener</sub>
+
+Abra a *DetailActivity* e modifique o método *onCreate*
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_detail);
+
+    Intent i = getIntent();
+    Toast.makeText(DetailActivity.this, i.getIntExtra("ID", 0) + "", Toast.LENGTH_SHORT).show();
+}
+```
+
+<sub>**Código 28** - Método onCreate</sub>
+
+Com isso, apenas um número é exibido na tela, este é o id o Pokemon.
