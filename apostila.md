@@ -961,3 +961,85 @@ protected void onCreate(Bundle savedInstanceState) {
 <sub>**Código 28** - Método onCreate</sub>
 
 Com isso, apenas um número é exibido na tela, este é o id o Pokemon.
+
+Código de *detail_activity*
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.jonatasleon.pokedex2.DetailActivity">
+
+    <ImageView
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:id="@+id/iv_detail_pokemon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Adiciona nome"
+        android:id="@+id/tv_detail_name"
+        android:layout_alignTop="@+id/iv_detail_pokemon"
+        android:layout_toRightOf="@+id/iv_detail_pokemon"
+        android:layout_toEndOf="@+id/iv_detail_pokemon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Adiciona tipos"
+        android:id="@+id/tv_detail_types"
+        android:layout_below="@+id/tv_detail_name"
+        android:layout_toRightOf="@+id/iv_detail_pokemon"
+        android:layout_toEndOf="@+id/iv_detail_pokemon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/tv_detail_attack"
+        android:layout_below="@+id/iv_detail_pokemon"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/tv_detail_defense"
+        android:layout_below="@+id/tv_detail_attack"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/tv_detail_speed"
+        android:layout_below="@+id/tv_detail_defense"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp" />
+
+
+</RelativeLayout>
+```
