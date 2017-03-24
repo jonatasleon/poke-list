@@ -196,7 +196,7 @@ Abra o arquivo **pokemon_row.xml** e deixe-o assim:
 
     <TextView
         android:id="@+id/tv_type"
-        android:layout_below="@id/name"
+        android:layout_below="@id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -534,7 +534,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL = "http://pokeapi.co/api/v1/";
+    public static final String BASE_URL = "http://pokeapi.co/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
@@ -570,7 +570,7 @@ import retrofit2.http.Path;
 
 public interface ApiInterface {
 
-    @GET("pokemon/{id}")
+    @GET("api/v1/pokemon/{id}")
     Call<Pokemon> getPokemon(@Path("id") int id);
 }
 
@@ -623,9 +623,20 @@ Agora temos modificar nosso método *addData* na classe *MainActivity*
       call.enqueue(new Callback<Pokemon>() {
         @Override
         public void onResponse(Call<Pokemon> call, Response<Pokemon> response) {
-          Pokemon pokemon = response.body();
-          pokeList.add(pokemon);
-          pokemonAdapter.notifyDataSetChanged();
+            if(response.isSuccessful()) {
+                Pokemon pokemon = response.body();
+
+                pokemons.add(pokemon);
+                pokemonAdapter.notifyDataSetChanged();
+
+                Log.i("POKEMON", "Name: " + pokemon.getName());
+                Log.i("POKEMON", "Attack: " + pokemon.getAttack());
+                Log.i("POKEMON", "Defense: " + pokemon.getDefense());
+                Log.i("POKEMON", "Health: " + pokemon.getHealth());
+                Log.i("POKEMON", "Height: " + pokemon.getHeight());
+                Log.i("POKEMON", "Weight: " + pokemon.getWeight());
+
+            }
         }
 
         @Override
@@ -643,3 +654,445 @@ Execute o projeto, dependendo da disponibilidade da API, os dados dos 30 primeir
 ![Pokemons API](./images/lista-api.png)
 
 <sub>**Figura 14** - Pokemons API</sub>
+
+## Carregando imagens
+
+Para carregar imagens no *RecyclerView* vamos utilizar a biblioteca [Picasso](http://square.github.io/picasso/). Adicione-a nas depedências do aplicativo(build.gradle)
+
+```js
+  compile 'com.squareup.picasso:picasso:2.5.2'
+```
+
+<sub>**Código 18** - Picasso</sub>
+
+Como vamos buscar as imagens a partir dos dados de uma *Sprite*, teremos que fazer um request no recurso *[sprite](http://pokeapi.co/docsv1/#sprites)*
+
+```json
+{
+  "id": 1,
+  "image": "/media/img/1383395659.12.png",
+  "name": "Bulbasaur_blue_red"
+}
+```
+
+<sub>**Código 19** - Resumo dos dados de um recurso *sprite*</sub>
+
+Assim, temos que ter uma classe que represente a resposta desta requisição, criamos então a classe *SpriteResponse*
+
+```java
+import com.google.gson.annotations.SerializedName;
+
+public class SpriteResponse {
+
+    @SerializedName("id")
+    private Integer id;
+
+    @SerializedName("image")
+    private String image;
+
+    @SerializedName("name")
+    private String name;
+
+    public SpriteResponse(Integer id, String image, String name) {
+        this.id = id;
+        this.image = image;
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+<sub>**Código 20** - Classe SpriteResponse</sub>
+
+E modificamos nossa *ApiInterface*, adicionando o método *getSprit*
+
+```java
+  @GET("{resource_uri}")
+  Call<SpriteResponse> getSprite(@Path("resource_uri") String resourceUri);
+```
+
+<sub>**Código 21** - getSprite em ApiInterface</sub>
+
+Também temos que alterar o nosso layout de **pokemon_row.xml**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:id="@+id/iv_pokemon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_pokemon"
+        android:layout_toEndOf="@+id/iv_pokemon" />
+
+    <TextView
+        android:id="@+id/tv_type"
+        android:layout_below="@id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_pokemon"
+        android:layout_toEndOf="@+id/iv_pokemon" />
+
+</RelativeLayout>
+```
+
+<sub>**Código 22** - pokemon_row.xml</sub>
+
+Agora adicionamos uma *ImageView* ao layout, então podemos mofificar nosso *PokemonAdapter* e seu *ViewHolder*
+
+```java
+public class PokeViewHolder extends RecyclerView.ViewHolder {
+    public TextView name, type;
+    public ImageView ivPokemon;
+
+    public PokeViewHolder(View itemView) {
+        super(itemView);
+        name = (TextView) itemView.findViewById(R.id.tv_name);
+        type = (TextView) itemView.findViewById(R.id.tv_type);
+        ivPokemon = (ImageView) itemView.findViewById(R.id.iv_pokemon);
+    }
+}
+```
+
+<sub>**Código 23** - Classe PokeViewHolder</sub>
+
+Agora vamos modificar o método *onBindViewHolder*
+
+```java
+@Override
+public void onBindViewHolder(final PokeViewHolder holder, int position) {
+    Pokemon pokemon = pokeList.get(position);
+    holder.name.setText(pokemon.getName());
+    holder.type.setText(pokemon.typesToString());
+
+    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+    Sprite sprite = pokemon.getSprites().get(0);
+    String spriteUrl = sprite.getResourceUri();
+
+    Call<SpriteResponse> call = apiService.getSprite(spriteUrl);
+    call.enqueue(new Callback<SpriteResponse>() {
+        @Override
+        public void onResponse(Call<SpriteResponse> call, Response<SpriteResponse> response) {
+            if(response.isSuccessful()){
+                SpriteResponse spriteResponse = response.body();
+                String image = "http://pokeapi.co" + spriteResponse.getImage();
+
+                Picasso.with(holder.ivPokemon.getContext())
+                        .load(image)
+                        .resize(64, 64)
+                        .into(holder.ivPokemon);
+            }
+        }
+
+        @Override
+        public void onFailure(Call<SpriteResponse> call, Throwable t) {
+
+        }
+    });
+}
+```
+
+<sub>**Código 24** - Refatoração onBindViewHolder</sub>
+
+Um detalhe importante aqui, observe a linha:
+
+```java
+  String spriteUrl = sprite.getResourceUri();
+```
+
+Como *getResourceUri()* retorna algo como */api/v1/sprite/1/* e nossa url base é *http://pokeapi.co/*, isso pode gerar uma *String* como *http://pokeapi.co//api/v1/sprite/1/*, assim gerando um erro em nossa requisição, para evitar isso, vamos refatorar nosso método *getResourceUri*
+
+
+```java
+public String getResourceUri() {
+    return resourceUri.substring(1);
+}
+```
+
+<sub>**Código 25** - getResourceUri refatorada</sub>
+
+Tudo ocorrendo corretamente, executando o projeto, temos como resultado
+
+![Resultado lista com imagens](./images/recycler-images.png)
+
+<sub>**Figura 15** - Resultado lista com imagens</sub>
+
+
+## Abrindo uma nova Activity
+
+Agora, vamos abrir uma nova activity. Essa activity mostrará os detalhes do Pokemon. Crie uma nova activity chamada *DetailActivity*.
+
+Antes de alterarmos o layout da *DetailActivity*, vamos fazer que ao clicar em algum item da nossa lista, transitemos de uma activity para outra. Crie uma classe chamada *RecyclerTouchListener*.
+
+```java
+public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+    private GestureDetector gestureDetector;
+    private ClickListener clickListener;
+
+
+    public interface ClickListener {
+        void onClick(View view, int position);
+
+        void onLongClick(View view, int position);
+    }
+
+    public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
+        this.clickListener = clickListener;
+        gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child != null && clickListener != null) {
+                    clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        View child = rv.findChildViewUnder(e.getX(), e.getY());
+        if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
+            clickListener.onClick(child, rv.getChildPosition(child));
+        }
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+    }
+}
+```
+
+<sub>**Código 26** - Classe RecyclerTouchListener</sub>
+
+Agora, abaixo da linha *recyclerView.setAdapter(pokemonAdapter)*, adicione o seguinte trecho que captura o clique do botão inicia uma nova activity.
+
+```java
+recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+    @Override
+    public void onClick(View view, int position) {
+        Intent i = new Intent(MainActivity.this, DetailActivity.class);
+        i.putExtra("ID", pokemons.get(position).getPokedexId());
+        startActivity(i);
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+
+    }
+}));
+```
+
+<sub>**Código 27** - addOnItemTouchListener</sub>
+
+Abra a *DetailActivity* e modifique o método *onCreate*
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_detail);
+
+    Intent i = getIntent();
+    Toast.makeText(DetailActivity.this, i.getIntExtra("ID", 0) + "", Toast.LENGTH_SHORT).show();
+}
+```
+
+<sub>**Código 28** - Método onCreate</sub>
+
+Com isso, apenas um número é exibido na tela, este é o id o Pokemon.
+
+Código de *detail_activity*
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.jonatasleon.pokedex2.DetailActivity">
+
+    <ImageView
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:id="@+id/iv_detail_pokemon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Adiciona nome"
+        android:id="@+id/tv_detail_name"
+        android:layout_alignTop="@+id/iv_detail_pokemon"
+        android:layout_toRightOf="@+id/iv_detail_pokemon"
+        android:layout_toEndOf="@+id/iv_detail_pokemon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Adiciona tipos"
+        android:id="@+id/tv_detail_types"
+        android:layout_below="@+id/tv_detail_name"
+        android:layout_toRightOf="@+id/iv_detail_pokemon"
+        android:layout_toEndOf="@+id/iv_detail_pokemon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/tv_detail_attack"
+        android:layout_below="@+id/iv_detail_pokemon"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/tv_detail_defense"
+        android:layout_below="@+id/tv_detail_attack"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/tv_detail_speed"
+        android:layout_below="@+id/tv_detail_defense"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp" />
+
+
+</RelativeLayout>
+```
+
+prepareData method
+
+```java
+private void prepareData(int id) {
+        final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<Pokemon> call = apiService.getPokemon(id);
+        call.enqueue(new Callback<Pokemon>() {
+            @Override
+            public void onResponse(Call<Pokemon> call, Response<Pokemon> response) {
+                Pokemon pokemon;
+
+                if(response.isSuccessful()) {
+                    pokemon = response.body();
+
+                    tvName.setText(pokemon.getName());
+                    tvTypes.setText(pokemon.typesToString());
+                    tvAttack.setText(pokemon.getAttack().toString());
+                    tvDefense.setText(pokemon.getDefense().toString());
+                    tvSpeed.setText(pokemon.getSpeed().toString());
+
+                    Call<SpriteResponse> callSprite;
+                    Sprite sprite = pokemon.getSprites().get(0);
+                    callSprite = apiService.getSprite(sprite.getResourceUri());
+                    callSprite.enqueue(new Callback<SpriteResponse>() {
+                        @Override
+                        public void onResponse(Call<SpriteResponse> call, Response<SpriteResponse> response) {
+                            SpriteResponse spriteResponse;
+                            if(response.isSuccessful()) {
+                                spriteResponse = response.body();
+                                Picasso.with(ivPokemon.getContext())
+                                        .load("http://pokeapi.co" + spriteResponse.getImage())
+                                        .resize(128,128)
+                                        .into(ivPokemon);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<SpriteResponse> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Pokemon> call, Throwable t) {
+
+            }
+        });
+    }
+```
