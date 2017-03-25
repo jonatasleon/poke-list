@@ -4,23 +4,33 @@ Essa apostila mostra o desenvolvimento passo-a-passo de um aplicação demo de u
 
 ## Criando projeto no Android Studio
 Ao abrir o Android Studio, uma tela de boas-vindas será exibida(Figura 1), clique em *Start a new Android Studio Project*.
+
 ![Tela Welcome](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/welcome.png)
+
 <sub>**Figura 1** - Tela Welcome</sub>
 
 Agora na tela de criação de um novo projeto(Figura 2), insira o nome da aplicação (*Application name*), um domínio(*Company Domain*), para exemplo coloque seu nome seguido de *.com*, e ao final escolha onde ficará a pasta do projeto(*Projeto Location*), clique em Next.
+
 ![Tela New Project](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/new-project.png)
+
 <sub>**Figura 2** - Tela New Project</sub>
 
 Como mostrado na Figura 3, deixe apenas selecionado a opção *Phone and Tablet*, com o *Minimum SDK* em *API 15: Android 4.0.3 (IceCreamSandwich)*, então clique em Next
+
 ![Tela Target Devices](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/target-devices.png)
+
 <sub>**Figura 3** - Tela Target Devices</sub>
 
 Selecione a opção *Add no activity*, como mostrado(Figura 4), então clique em *Finish*
+
 ![Tela Add Activity](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/add-activity.png)
+
 <sub>**Figura 4** - Tela Add Activity</sub>
 
 Após isso, a estrutura de arquivos do seu projeto vai fica assim:
+
 ![Estrutura de arquivos](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/tree-files.png)
+
 <sub>**Figura 5** - Estrutura de arquivos</sub>
 
 Pronto, agora seu projeto está criado.
@@ -63,11 +73,15 @@ dependencies {
 Agora que já fizemos o setup inicial, vamos criar nossa primeira Activity e assim já ter alguma tela para visualizarmos no emulador/celular
 
 Expanda a estrutura de visualização dos arquivos até exibir o nome do pacote, na imagem de exemplo(Figura 6) é *com.jonatasleon.pokedex*, então clique com o botão direito e vá em *New -> Activity -> Empty Activity*.
+
 ![Estrutura](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/package.png)
+
 <sub>**Figura 6** - Estrutura de arquivos</sub>
 
 Como na Figura 7, lembre-se de marcar a opção *Launcher Activity*, então clique em Finish
+
 ![Nova Activity](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/create-activity.png)
+
 <sub>**Figura 7** - Nova Activity</sub>
 
 Abra o arquivo **activity_main.xml** (*app/src/main/res/layout/activity_main.xml*) e mude para o modo de edição para o modo text, altere o componente ConstraintLayout e adicione um RecyclerView para que o arquivo fique assim:
@@ -94,11 +108,15 @@ Abra o arquivo **activity_main.xml** (*app/src/main/res/layout/activity_main.xml
 <sub>**Código 3** - Arquivo activity_main.xml</sub>
 
 Voltando para o modo Design, é exibido uma prévia de como ficaria o layout.
+
 ![Preview](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/preview.png)
+
 <sub>**Figura 8** - Prévia do Layout</sub>
 
 Agora adicione uma nova classe, clique sobre o nome do pacote novamente, *New -> Java Class*, coloque o nome da classe como **Pokemon** e clique em *OK*.
+
 ![Nova classe](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/new-class.png)
+
 <sub>**Figura 9** - Nova classe</sub>
 
 O Pokemon terá, por enquanto, dois atributos, *name* e *type*. Adicione dois construtores públicos, o primeiro sem paramêtros, o segundo contendo os atributos criados como paramêtro. Após isso, adicione getters e setters para cada atributo. O código final do arquivo **Pokemon.java** deve fica da seguinte forma:
@@ -138,11 +156,15 @@ public class Pokemon {
 <sub>**Código 4** - Pokemon.java</sub>
 
 Agora, crie um novo layout. Clique com o botão direito sobre a pasta **layout  ** então clique em *New > Layout Resource File* (*Figura 10*)
+
 ![Pasta layout](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/layout-dir.png)
+
 <sub>**Figura 10** - Pasta layout</sub>
 
 Então coloque como nome **pokemon_row** e em *Root Element* digite *RelativeLayout*, aperte *OK*
+
 ![Pokemon Row](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/add_pokemon_row.png)
+
 <sub>**Figura 11** - Adiciona layout pokemon_row</sub>
 
 Abra o arquivo **pokemon_row.xml** e deixe-o assim:
@@ -330,7 +352,9 @@ public class MainActivity extends AppCompatActivity {
 <sub>**Código 8** - MainActivity completa</sub>
 
 Ao executar o aplicativo, o resultado esperado seria uma lista com os 3 Pokemons adicionados no método addData.
+
 ![Resultado esperado](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/app_resultado_01.png)
+
 <sub>**Figura 12** - Resultado Esperado</sub>
 
 ## Buscando dados na PokéAPI
@@ -513,7 +537,9 @@ public class ApiClient {
 Nossa *ApiClient* representa o cliente que fará todas as requisições na PokéAPI. Agora precisamos dizer ao *ApiClient*, onde ele deve buscar as informações, para isso, criaremos nossa interface **ApiInterface**.
 
 Para criar uma interface, siga os mesmos passos para criar uma classe, mas na tela de inserção do nome da classe, altere *class* para *interface*.
+
 ![class para interface](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/class-to-interface.png)
+
 <sub>**Figura 13** - Criando interface</sub>
 
 O código de ApiInterface.java ficará assim:
