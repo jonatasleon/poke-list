@@ -86,7 +86,7 @@ Como na Figura 7, lembre-se de marcar a opção *Launcher Activity*, então cliq
 
 <sub>**Figura 7** - Nova Activity</sub>
 
-Abra o arquivo **activity_main.xml** e mude para o modo text, altere o componente RelativeLayout e adicione um RecyclerView para que o arquivo fique assim:
+Abra o arquivo **activity_main.xml** (*app/src/main/res/layout/activity_main.xml*) e mude para o modo de edição para o modo text, altere o componente ConstraintLayout e adicione um RecyclerView para que o arquivo fique assim:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
