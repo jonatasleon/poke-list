@@ -1,35 +1,35 @@
-# Apostila
+# Criando uma Pokedex!
 
 Essa apostila mostra o desenvolvimento passo-a-passo de um aplicação demo de um lista de Pokemons. A função principal do aplicativo será consumir a API [PokéAPI](https://pokeapi.co), que se trata de uma API sobre Pokemons destinada a fins educacionais e gratuita.
 
 ## Criando projeto no Android Studio
 Ao abrir o Android Studio, uma tela de boas-vindas será exibida(Figura 1), clique em *Start a new Android Studio Project*.
 
-![Tela Welcome](./images/welcome.png)
+![Tela Welcome](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/welcome.png)
 
 <sub>**Figura 1** - Tela Welcome</sub>
 
 Agora na tela de criação de um novo projeto(Figura 2), insira o nome da aplicação (*Application name*), um domínio(*Company Domain*), para exemplo coloque seu nome seguido de *.com*, e ao final escolha onde ficará a pasta do projeto(*Projeto Location*), clique em Next.
 
-![Tela New Project](./images/new-project.png)
+![Tela New Project](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/new-project.png)
 
 <sub>**Figura 2** - Tela New Project</sub>
 
 Como mostrado na Figura 3, deixe apenas selecionado a opção *Phone and Tablet*, com o *Minimum SDK* em *API 15: Android 4.0.3 (IceCreamSandwich)*, então clique em Next
 
-![Tela Target Devices](./images/target-devices.png)
+![Tela Target Devices](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/target-devices.png)
 
 <sub>**Figura 3** - Tela Target Devices</sub>
 
 Selecione a opção *Add no activity*, como mostrado(Figura 4), então clique em *Finish*
 
-![Tela Add Activity](./images/add-activity.png)
+![Tela Add Activity](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/add-activity.png)
 
 <sub>**Figura 4** - Tela Add Activity</sub>
 
 Após isso, a estrutura de arquivos do seu projeto vai fica assim:
 
-![Estrutura de arquivos](./images/tree-files.png)
+![Estrutura de arquivos](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/tree-files.png)
 
 <sub>**Figura 5** - Estrutura de arquivos</sub>
 
@@ -72,13 +72,13 @@ Agora que tudo está configurado, vamos criar nossa primeira Activity e assim j�
 
 Expanda a estrutura de visualização dos arquivos até exibir o nome do pacote, na imagem de exemplo(Figura 6) é *com.jonatasleon.pokedex*, então clique com o botão direito e vá em *New -> Activity -> Empty Activity*.
 
-![Estrutura](./images/package.png)
+![Estrutura](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/package.png)
 
 <sub>**Figura 6** - Estrutura de arquivos</sub>
 
 Como na Figura 7, lembre-se de marcar a opção *Launcher Activity*, então clique em Finish
 
-![Nova Activity](./images/create-activity.png)
+![Nova Activity](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/create-activity.png)
 
 <sub>**Figura 7** - Nova Activity</sub>
 
@@ -109,13 +109,13 @@ Abra o arquivo **activity_main.xml** e mude para o modo text, altere o component
 
 Voltando para o modo Design, é exibido uma prévia de como ficaria o layout.
 
-![Preview](./images/preview.png)
+![Preview](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/preview.png)
 
 <sub>**Figura 8** - Prévia do Layout</sub>
 
 Agora adicione uma nova classe, clique sobre o nome do pacote novamente, *New -> Java Class*, coloque o nome da classe como **Pokemon** e clique em *OK*.
 
-![Nova classe](./images/new-class.png)
+![Nova classe](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/new-class.png)
 
 <sub>**Figura 9** - Nova classe</sub>
 
@@ -159,13 +159,13 @@ public class Pokemon {
 
 Agora, crie um novo layout. Clique com o botão direito sobre a pasta **layout**(*Figura 10*)
 
-![Pasta layout](./images/layout-dir.png)
+![Pasta layout](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/layout-dir.png)
 
 <sub>**Figura 10** - Pasta layout</sub>
 
 Então coloque como nome **pokemon_row** e em *Root Element* digite *RelativeLayout*, aperte *OK*
 
-![Pokemon Row](./images/add_pokemon_row.png)
+![Pokemon Row](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/add_pokemon_row.png)
 
 <sub>**Figura 11** - Adiciona layout pokemon_row</sub>
 
@@ -364,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
 
 Ao executar o aplicativo, o resultado esperado seria uma lista com os 3 Pokemons adicionados no método addData.
 
-![Resultado esperado](./images/app_resultado_01.png)
+![Resultado esperado](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/app_resultado_01.png)
 
 <sub>**Figura 12** - Resultado Esperado</sub>
 
@@ -555,7 +555,7 @@ Nossa ApiClient representa o cliente que fará todas as requisições na PokéAP
 
 Para criar uma interface, siga os mesmos passos para criar uma classe, mas na tela de inserção do nome da classe, altere *class* para *interface*.
 
-![class para interface](./images/class-to-interface.png)
+![class para interface](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/class-to-interface.png)
 
 <sub>**Figura 13** - Criando interface</sub>
 
@@ -570,7 +570,7 @@ import retrofit2.http.Path;
 
 public interface ApiInterface {
 
-    @GET("api/v1/pokemon/{id}")
+    @GET("api/v1/pokemon")
     Call<Pokemon> getPokemon(@Path("id") int id);
 }
 
@@ -651,7 +651,7 @@ Agora temos modificar nosso método *addData* na classe *MainActivity*
 
 Execute o projeto, dependendo da disponibilidade da API, os dados dos 30 primeiros Pokemons irão ser exibidos em nosso *RecyclerView*, assim
 
-![Pokemons API](./images/lista-api.png)
+![Pokemons API](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/lista-api.png)
 
 <sub>**Figura 14** - Pokemons API</sub>
 
@@ -860,7 +860,7 @@ public String getResourceUri() {
 
 Tudo ocorrendo corretamente, executando o projeto, temos como resultado
 
-![Resultado lista com imagens](./images/recycler-images.png)
+![Resultado lista com imagens](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/recycler-images.png)
 
 <sub>**Figura 15** - Resultado lista com imagens</sub>
 
@@ -1043,6 +1043,7 @@ Código de *detail_activity*
 
 </RelativeLayout>
 ```
+<sub>**Código 29** - detailActivity</sub>
 
 prepareData method
 
@@ -1091,8 +1092,9 @@ private void prepareData(int id) {
 
             @Override
             public void onFailure(Call<Pokemon> call, Throwable t) {
-
+	
             }
         });
     }
 ```
+<sub>**Código 30** - Método prepareData</sub>
