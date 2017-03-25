@@ -46,17 +46,21 @@ Como o aplicativo irá buscar as informações na internet, temos que informar q
 ```
 <sub>**Código 1** - Permissão para internet</sub>
 
-Abra o arquivo build.gradle e adicione as bibliotecas de design e recyclerview, elas oferecem suporte a dispositivos com versões do Android anteriores ao Android Lollipop, adicione também as bibliotecas para parse de dados, *GSON* e a *Retrofit*.
+Abra o arquivo build.gradle e adicione as bibliotecas de design e recyclerview, elas oferecem suporte a dispositivos com versões do Android anteriores ao Android Nougat, adicione também as bibliotecas para parse de dados, *GSON* e a *Retrofit*.
 
 ```js
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    
+    compile 'com.android.support:appcompat-v7:25.3.0'
 
     // libs de compatibilidade
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
 
     // retrofit, gson
     compile 'com.google.code.gson:gson:2.7'
@@ -68,7 +72,7 @@ dependencies {
 
 ## Criando nossa primeira Activity
 
-Agora que tudo está configurado, vamos criar nossa primeira Activity e assim já ter alguma tela para visualizarmos no emulador/celular
+Agora que já fizemos o setup inicial, vamos criar nossa primeira Activity e assim já ter alguma tela para visualizarmos no emulador/celular
 
 Expanda a estrutura de visualização dos arquivos até exibir o nome do pacote, na imagem de exemplo(Figura 6) é *com.jonatasleon.pokedex*, então clique com o botão direito e vá em *New -> Activity -> Empty Activity*.
 
@@ -1044,7 +1048,7 @@ Agora que já conseguimos recuperar o id do pokemon selecionado, vamos alterar o
 ```
 <sub>**Código 29** - detailActivity</sub>
 
-prepareData method
+Agora, com o layout pronto para exibir as informações, crie um método para fazer uma nova requisição 
 
 ```java
 private void prepareData(int id) {
