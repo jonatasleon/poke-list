@@ -960,10 +960,9 @@ protected void onCreate(Bundle savedInstanceState) {
 
 <sub>**Código 28** - Método onCreate</sub>
 
-Com isso, apenas um número é exibido na tela, este é o id o Pokemon.
+Com isso, o id do pokemon é enviado da *MainActivity* para a *DetailActivity*. Quando o método *onCreate* da *DetailActivity* for executado, ele vai recuperar o id enviado e o exibira na tela através de uma Toast exibida na tela.
 
-Código de *detail_activity*
-
+Agora que já conseguimos recuperar o id do pokemon selecionado, vamos alterar o arquivo de layout *detail_activity*, deixando-o assim:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
