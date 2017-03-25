@@ -161,7 +161,7 @@ public class Pokemon {
 
 <sub>**Código 4** - Pokemon.java</sub>
 
-Agora, crie um novo layout. Clique com o botão direito sobre a pasta **layout**(*Figura 10*)
+Agora, crie um novo layout. Clique com o botão direito sobre a pasta **layout  ** então clique em *New > Layout Resource File* (*Figura 10*)
 
 ![Pasta layout](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/layout-dir.png)
 
@@ -223,7 +223,7 @@ import java.util.List;
 
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokeViewHolder> {
 
-    private List<Pokemon> pokeList;
+    private List<Pokemon> pokemonList;
 
     public class PokeViewHolder extends RecyclerView.ViewHolder {
         public TextView name, type;
@@ -235,28 +235,28 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokeView
         }
     }
 
-    public PokemonAdapter(List<Pokemon> pokeList) {
-        this.pokeList = pokeList;
+    public PokemonAdapter(List<Pokemon> pokemonList) {
+        this.pokemonList = pokemonList;
     }
 
     @Override
     public PokeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.pokemon_row, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View itemView = inflater.inflate(R.layout.pokemon_row, parent, false);
 
         return new PokeViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(PokeViewHolder holder, int position) {
-        Pokemon pokemon = pokeList.get(position);
+        Pokemon pokemon = pokemonList.get(position);
         holder.name.setText(pokemon.getName());
         holder.type.setText(pokemon.getType());
     }
 
     @Override
     public int getItemCount() {
-        return pokeList.size();
+        return pokemonList.size();
     }
 }
 ```
@@ -337,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
     pokemonAdapter = new PokemonAdapter(pokeList);
 
     RecyclerView.LayoutManager layoutManager;
-    layoutManager = new LinearLayoutManager(getApplicationContext());
+    layoutManager = new LinearLayoutManager(this);
 
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setItemAnimator(new DefaultItemAnimator());
