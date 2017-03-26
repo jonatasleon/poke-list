@@ -263,7 +263,7 @@ Abra o arquivo **MainActivity.java** e deixo modifique o método *onCreate*:
 
       recyclerView = (RecyclerView) findViewById(R.id.rv_pokemons);
 
-      pokemonAdapter = new PokemonAdapter(pokeList);
+      pokemonAdapter = new PokemonAdapter(pokemonList);
 
       RecyclerView.LayoutManager layoutManager;
       layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -281,13 +281,13 @@ private void addData() {
   Pokemon poke;
 
   poke = new Pokemon("Bulbasaur", "Grama");
-  pokeList.add(poke);
+  pokemonList.add(poke);
 
   poke = new Pokemon("Charmander", "Fogo");
-  pokeList.add(poke);
+  pokemonList.add(poke);
 
   poke = new Pokemon("Squirtle", "Água");
-  pokeList.add(poke);
+  pokemonList.add(poke);
 
   pokemonAdapter.notifyDataSetChanged();
 }
@@ -309,7 +309,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-  List<Pokemon> pokeList = new ArrayList<>();
+  List<Pokemon> pokemonList = new ArrayList<>();
   RecyclerView recyclerView;
   PokemonAdapter pokemonAdapter;
 
@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
 
     recyclerView = (RecyclerView) findViewById(R.id.rv_pokemons);
 
-    pokemonAdapter = new PokemonAdapter(pokeList);
+    pokemonAdapter = new PokemonAdapter(pokemonList);
 
     RecyclerView.LayoutManager layoutManager;
     layoutManager = new LinearLayoutManager(this);
@@ -336,13 +336,13 @@ public class MainActivity extends AppCompatActivity {
     Pokemon poke;
 
     poke = new Pokemon("Bulbasaur", "Grama");
-    pokeList.add(poke);
+    pokemonList.add(poke);
 
     poke = new Pokemon("Charmander", "Fogo");
-    pokeList.add(poke);
+    pokemonList.add(poke);
 
     poke = new Pokemon("Squirtle", "Água");
-    pokeList.add(poke);
+    pokemonList.add(poke);
 
     pokemonAdapter.notifyDataSetChanged();
   }
@@ -438,9 +438,11 @@ public class Sprite {
 
     @SerializedName("name")
     private String name;
+    
+    @SerializedName("resource_uri")
+    private String resourceUri;
 
     public Sprite(String name) {
-
         this.name = name;
     }
 
@@ -450,6 +452,14 @@ public class Sprite {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getResourceUri() {
+        return resourceUri;
+    }
+
+    public void setResourceUri(String resourceUri) {
+        this.resourceUri = resourceUri;
     }
 }
 
@@ -536,7 +546,7 @@ public class ApiClient {
 
 Nossa *ApiClient* representa o cliente que fará todas as requisições na PokéAPI. Agora precisamos dizer ao *ApiClient*, onde ele deve buscar as informações, para isso, criaremos nossa interface **ApiInterface**.
 
-Para criar uma interface, siga os mesmos passos para criar uma classe, mas na tela de inserção do nome da classe, altere *class* para *interface*.
+Para criar uma interface, siga os mesmos passos para criar uma classe, mas na tela de inserção do nome da classe, altere *Class* para *Interface*.
 
 ![class para interface](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/class-to-interface.png)
 
@@ -563,9 +573,9 @@ Com isso estamos dizendo que ao chamar o método *getPokemon(int)* estamos fazen
 
 Agora vamos fazer que nossas requisições apareçam como uma lista de Pokemons no RecyclerView, também, como consequência, vamos corrigir os erros apontados em *MainActivity* e *PokemonAdapter*.
 
-Para isso, vamos criar um novo método que colocar todos os *names* de *PokeTypes* em uma única *String*. Abra o arquivo Pokemon e adicione o método *pokeTypesToString*
-
+Para isso, vamos criar um novo método que colocar todos os *names* de *PokeTypes* em uma única *String*. Abra o arquivo *Pokemon.java* e adicione o método *pokeTypesToString*:
 ```java
+  /* arquivo Pokemon.js */
   public String pokeTypesToString() {
     String types = "";
     for (int i = 0; i < pokeTypes.size(); i++) {
@@ -577,24 +587,20 @@ Para isso, vamos criar um novo método que colocar todos os *names* de *PokeType
     return types;
   }
 ```
-
 <sub>**Código 15** - Método pokeTypesToString</sub>
 
 Agora modifique o método *onBindViewHolder* na classe *PokemonAdapter*
-
 ```java
   @Override
   public void onBindViewHolder(PokeViewHolder holder, int position) {
-    Pokemon pokemon = pokeList.get(position);
+    Pokemon pokemon = pokemonList.get(position);
     holder.name.setText(pokemon.getName());
     holder.type.setText(pokemon.pokeTypesToString());
   }
 ```
-
 <sub>**Código 16** - Método onBindViewHolder</sub>
 
-Agora temos modificar nosso método *addData* na classe *MainActivity*
-
+Agora temos modificar nosso método *addData* na classe *MainActivity*:
 ```java
   private void addData() {
     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -627,7 +633,6 @@ Agora temos modificar nosso método *addData* na classe *MainActivity*
     }
   }
 ```
-
 <sub>**Código 17** - Método addData</sub>
 
 Execute o projeto, dependendo da disponibilidade da API, os dados dos 30 primeiros Pokemons irão ser exibidos em nosso *RecyclerView*, assim
@@ -639,15 +644,12 @@ Execute o projeto, dependendo da disponibilidade da API, os dados dos 30 primeir
 ## Carregando imagens
 
 Para carregar imagens no *RecyclerView* vamos utilizar a biblioteca [Picasso](http://square.github.io/picasso/). Adicione-a nas depedências do aplicativo(build.gradle)
-
 ```js
   compile 'com.squareup.picasso:picasso:2.5.2'
 ```
-
 <sub>**Código 18** - Picasso</sub>
 
 Como vamos buscar as imagens a partir dos dados de uma *Sprite*, teremos que fazer um request no recurso *[sprite](http://pokeapi.co/docsv1/#sprites)*
-
 ```json
 {
   "id": 1,
@@ -655,11 +657,9 @@ Como vamos buscar as imagens a partir dos dados de uma *Sprite*, teremos que faz
   "name": "Bulbasaur_blue_red"
 }
 ```
-
 <sub>**Código 19** - Resumo dos dados de um recurso *sprite*</sub>
 
 Assim, temos que ter uma classe que represente a resposta desta requisição, criamos então a classe *SpriteResponse*
-
 ```java
 import com.google.gson.annotations.SerializedName;
 
@@ -705,20 +705,16 @@ public class SpriteResponse {
     }
 }
 ```
-
 <sub>**Código 20** - Classe SpriteResponse</sub>
 
-E modificamos nossa *ApiInterface*, adicionando o método *getSprit*
-
+E modificamos nossa *ApiInterface*, adicionando o método *getSprite*
 ```java
   @GET("{resource_uri}")
   Call<SpriteResponse> getSprite(@Path("resource_uri") String resourceUri);
 ```
-
 <sub>**Código 21** - getSprite em ApiInterface</sub>
 
 Também temos que alterar o nosso layout de **pokemon_row.xml**
-
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
@@ -762,11 +758,9 @@ Também temos que alterar o nosso layout de **pokemon_row.xml**
 
 </RelativeLayout>
 ```
-
 <sub>**Código 22** - pokemon_row.xml</sub>
 
-Agora adicionamos uma *ImageView* ao layout, então podemos mofificar nosso *PokemonAdapter* e seu *ViewHolder*
-
+Agora adicionamos uma *ImageView* ao layout, então podemos mofificar nosso *PokemonAdapter* e seu *ViewHolder*:
 ```java
 public class PokeViewHolder extends RecyclerView.ViewHolder {
     public TextView name, type;
@@ -780,17 +774,15 @@ public class PokeViewHolder extends RecyclerView.ViewHolder {
     }
 }
 ```
-
 <sub>**Código 23** - Classe PokeViewHolder</sub>
 
-Agora vamos modificar o método *onBindViewHolder*
-
+Agora vamos modificar o método *onBindViewHolder*:
 ```java
 @Override
 public void onBindViewHolder(final PokeViewHolder holder, int position) {
-    Pokemon pokemon = pokeList.get(position);
+    Pokemon pokemon = pokemonList.get(position);
     holder.name.setText(pokemon.getName());
-    holder.type.setText(pokemon.typesToString());
+    holder.type.setText(pokemon.pokeTypesToString());
 
     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
@@ -819,7 +811,6 @@ public void onBindViewHolder(final PokeViewHolder holder, int position) {
     });
 }
 ```
-
 <sub>**Código 24** - Refatoração onBindViewHolder</sub>
 
 Um detalhe importante aqui, observe a linha:
@@ -839,7 +830,7 @@ public String getResourceUri() {
 
 <sub>**Código 25** - getResourceUri refatorada</sub>
 
-Tudo ocorrendo corretamente, executando o projeto, temos como resultado
+Tudo ocorrendo corretamente, executando o projeto, temos os seguinte resultado
 
 ![Resultado lista com imagens](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/recycler-images.png)
 
@@ -1041,7 +1032,7 @@ private void prepareData(int id) {
                     pokemon = response.body();
 
                     tvName.setText(pokemon.getName());
-                    tvTypes.setText(pokemon.typesToString());
+                    tvTypes.setText(pokemon.pokeTypesToString());
                     tvAttack.setText(pokemon.getAttack().toString());
                     tvDefense.setText(pokemon.getDefense().toString());
                     tvSpeed.setText(pokemon.getSpeed().toString());
