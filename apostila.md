@@ -60,10 +60,11 @@ dependencies {
     compile 'com.android.support:design:25.3.0'
     compile 'com.android.support:recyclerview-v7:25.3.0'
 
-    // retrofit, gson
+    // retrofit, gson, picasso
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
 ```
 <sub>**Código 2** - Adicionando as dependências</sub>
@@ -643,7 +644,7 @@ Execute o projeto, dependendo da disponibilidade da API, os dados dos 30 primeir
 
 ## Carregando imagens
 
-Para carregar imagens no *RecyclerView* vamos utilizar a biblioteca [Picasso](http://square.github.io/picasso/). Adicione-a nas depedências do aplicativo(build.gradle)
+Para carregar imagens no *RecyclerView* vamos utilizar a biblioteca [Picasso](http://square.github.io/picasso/). Sua dependência já foi adicionada ao projeto, observe a seguinte linha no arquivo *build.gradle*:
 ```js
   compile 'com.squareup.picasso:picasso:2.5.2'
 ```
@@ -819,18 +820,17 @@ Um detalhe importante aqui, observe a linha:
   String spriteUrl = sprite.getResourceUri();
 ```
 
-Como *getResourceUri()* retorna algo como */api/v1/sprite/1/* e nossa url base é *http://pokeapi.co/*, isso pode gerar uma *String* como *http://pokeapi.co//api/v1/sprite/1/*, assim gerando um erro em nossa requisição, para evitar isso, vamos refatorar nosso método *getResourceUri*
-
+Como *getResourceUri()* retorna algo como */api/v1/sprite/1/* e nossa url base é *http://pokeapi.co/*, isso pode gerar uma *String* como *http://pokeapi.co//api/v1/sprite/1/*, assim gerando um erro em nossa requisição, para evitar isso, vamos refatorar nosso método *getResourceUri* na classe *Sprite*:
 
 ```java
+/* Sprite.java */
 public String getResourceUri() {
     return resourceUri.substring(1);
 }
 ```
-
 <sub>**Código 25** - getResourceUri refatorada</sub>
 
-Tudo ocorrendo corretamente, executando o projeto, temos os seguinte resultado
+Tudo ocorrendo corretamente, executando o projeto, temos os seguinte resultado:
 
 ![Resultado lista com imagens](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/recycler-images.png)
 
@@ -839,10 +839,9 @@ Tudo ocorrendo corretamente, executando o projeto, temos os seguinte resultado
 
 ## Abrindo uma nova Activity
 
-Agora, vamos abrir uma nova activity. Essa activity mostrará os detalhes do Pokemon. Crie uma nova activity chamada *DetailActivity*.
+Agora vamos crar uma uma activity que mostre informações mais detalhadas ao selecionarmos algum Pokemon. Crie uma nova activity chamada *DetailActivity*.
 
-Antes de alterarmos o layout da *DetailActivity*, vamos fazer que ao clicar em algum item da nossa lista, transitemos de uma activity para outra. Crie uma classe chamada *RecyclerTouchListener*.
-
+Antes de modificarmos o layout de *DetailActivity*, criaremos a estrutura que realiza a transição de uma activity para outra. Crie uma classe chamada *RecyclerTouchListener*.
 ```java
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
@@ -894,11 +893,11 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
     }
 }
 ```
-
 <sub>**Código 26** - Classe RecyclerTouchListener</sub>
 
-Agora, abaixo da linha *recyclerView.setAdapter(pokemonAdapter)*, adicione o seguinte trecho que captura o clique do botão inicia uma nova activity.
+Diferente do que acontece com a classe *ListView* é necessário implementar outros meios de capturar o clique em algum item da lista de um *RecyclerView*. Nossa recém-criada *RecyclerTouchListener* implementa a *interface* **RecyclerView.OnItemTouchListener**, onde através dela podemos capturar o toque em algum item da lista, no entanto, para facilitarmos a utilização desta classe, o construtor da *RecyclerTouchListener* pede uma implementação de *RecyclerTouchListener.ClickListener*, ficando mais simples capturarmos o clique.
 
+Agora volte para a *MainActivity* e  abaixo da linha *recyclerView.setAdapter(pokemonAdapter)*, adicione o seguinte trecho que captura o clique do botão inicia uma nova activity.
 ```java
 recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
     @Override
@@ -914,11 +913,9 @@ recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationCont
     }
 }));
 ```
-
 <sub>**Código 27** - addOnItemTouchListener</sub>
 
-Abra a *DetailActivity* e modifique o método *onCreate*
-
+Agora no arquivo *DetailActivity.java*, modifique o método *onCreate*
 ```java
 @Override
 protected void onCreate(Bundle savedInstanceState) {
@@ -929,10 +926,25 @@ protected void onCreate(Bundle savedInstanceState) {
     Toast.makeText(DetailActivity.this, i.getIntExtra("ID", 0) + "", Toast.LENGTH_SHORT).show();
 }
 ```
-
 <sub>**Código 28** - Método onCreate</sub>
 
-Com isso, o id do pokemon é enviado da *MainActivity* para a *DetailActivity*. Quando o método *onCreate* da *DetailActivity* for executado, ele vai recuperar o id enviado e o exibira na tela através de uma Toast exibida na tela.
+Antes de executar seu código, garante que o layout **activity_detail** esteja da seguinte forma:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/fab_margin"
+    android:paddingLeft="@dimen/fab_margin"
+    android:paddingRight="@dimen/fab_margin"
+    android:paddingTop="@dimen/fab_margin"
+    tools:context="com.jonatasleon.pokedex.DetailActivity">
+</RelativeLayout>
+```
+<sub>**Código 29** - *activity_detail* limpa</sub>
+
+Agora o id do pokemon é enviado da *MainActivity* para a *DetailActivity*. Quando o método *onCreate* da *DetailActivity* for executado, ele vai recuperar o id enviado e o exibira na tela através de uma Toast exibida na tela.
 
 Agora que já conseguimos recuperar o id do pokemon selecionado, vamos alterar o arquivo de layout *detail_activity*, deixando-o assim:
 ```xml
@@ -941,11 +953,11 @@ Agora que já conseguimos recuperar o id do pokemon selecionado, vamos alterar o
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.jonatasleon.pokedex2.DetailActivity">
+    android:paddingBottom="@dimen/fab_margin"
+    android:paddingLeft="@dimen/fab_margin"
+    android:paddingRight="@dimen/fab_margin"
+    android:paddingTop="@dimen/fab_margin"
+    tools:context="com.jonatasleon.pokedextutorial.DetailActivity">
 
     <ImageView
         android:layout_width="128dp"
@@ -962,7 +974,7 @@ Agora que já conseguimos recuperar o id do pokemon selecionado, vamos alterar o
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Adiciona nome"
+        android:text="@null"
         android:id="@+id/tv_detail_name"
         android:layout_alignTop="@+id/iv_detail_pokemon"
         android:layout_toRightOf="@+id/iv_detail_pokemon"
@@ -972,54 +984,93 @@ Agora que já conseguimos recuperar o id do pokemon selecionado, vamos alterar o
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Adiciona tipos"
+        android:text="@null"
         android:id="@+id/tv_detail_types"
         android:layout_below="@+id/tv_detail_name"
         android:layout_toRightOf="@+id/iv_detail_pokemon"
         android:layout_toEndOf="@+id/iv_detail_pokemon" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/tv_detail_attack"
         android:layout_below="@+id/iv_detail_pokemon"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="16dp" />
+        android:orientation="vertical"
+        android:background="#6000">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/tv_detail_defense"
-        android:layout_below="@+id/tv_detail_attack"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="16dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            android:text="@null"
+            android:id="@+id/tv_detail_attack"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/tv_detail_speed"
-        android:layout_below="@+id/tv_detail_defense"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="16dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            android:text="@null"
+            android:id="@+id/tv_detail_defense"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+            android:text="@null"
+            android:id="@+id/tv_detail_speed"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"/>
+    </LinearLayout>
 
 </RelativeLayout>
 ```
-<sub>**Código 29** - detailActivity</sub>
+<sub>**Código 30** - detailActivity</sub>
 
-Agora, com o layout pronto para exibir as informações, crie um método para fazer uma nova requisição 
-
+Dentro da classe *DetailActivity* declare os elementos criados no layout:
 ```java
-private void prepareData(int id) {
+public class DetailActivity extends AppCompatActivity {
+
+    private TextView tvName, tvTypes, tvAttack, tvDefense, tvSpeed;
+    private ImageView ivPokemon;
+
+    /* restante do código */
+}
+```
+<sub>**Código 31** - Declaração dos elementos</sub>
+
+No método *onCreate*, vincule as varivéis declaradas aos seus respectivos elementos no layout:
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_detail);
+
+    tvName = (TextView) findViewById(R.id.tv_detail_name);
+    tvTypes = (TextView) findViewById(R.id.tv_detail_types);
+    tvAttack = (TextView) findViewById(R.id.tv_detail_attack);
+    tvDefense = (TextView) findViewById(R.id.tv_detail_defense);
+    tvSpeed = (TextView) findViewById(R.id.tv_detail_speed);
+    ivPokemon = (ImageView) findViewById(R.id.iv_detail_pokemon);
+
+    int id = getIntent().getIntExtra("ID", 0);
+    requestData(id);
+}
+```
+<sub>**Código 32** - Declaração dos elementos</sub>
+
+Observe as duas últimas linha de código do método *onCreate*. Agora recuperamos o **id** do Pokemon passamos ele como paramêtro para o método *requestData*, vamos criar este método agora.
+
+Ainda no arquivo *DetailActivity.java*, crie o método para trazer os dados e também exibir uma imagem do Pokemon:
+```java
+private void requestData(int id) {
         final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
         Call<Pokemon> call = apiService.getPokemon(id);
@@ -1068,4 +1119,52 @@ private void prepareData(int id) {
         });
     }
 ```
-<sub>**Código 30** - Método prepareData</sub>
+<sub>**Código 33** - Método prepareData</sub>
+
+Neste código encadeamos uma chamada dentro de outra, buscando o dados do *Pokemon*, assim que é recebido, fazer uma requisição dos dados da *Sprite* e então, quando recebemos a *URI* da imagem, utilizamos a *Picasso* para colocar a imagem dentro da imageView que temos no layout.
+
+O resultado pode ser algo como:
+
+![Resultado detalhe Pokemon](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/detail-activity.png)
+
+<sub>**Figura 16** - Resultado da activity com detalhes</sub>
+
+
+## Cores
+
+Vamos alterar a cor padrão do aplicativo, só para que combine mais com a identidade gráfica de um "produto" voltado para o mundo Pokemon.
+
+Altere o arquivo **colors.xml** (*res > values*):
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F44336</color>
+    <color name="colorPrimaryDark">#D32F2F</color>
+    <color name="colorAccent">#FFEB3B</color>
+</resources>
+```
+<sub>**Código 34** - Cores no arquivo *colors.xml*</sub>
+
+Essas cores fazem parte do estilo do [Material Design](https://material.io/guidelines/). Para facilitar a geração das cores, utilizei o [Material Design Palette](https://www.materialpalette.com/red/yellow).
+
+Como resultado, nossa toolbar foi alterada.
+
+![Resultado detalhe Pokemon](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/toolbar-color.png)
+
+<sub>**Figura 17**- Toolbar vermelha</sub>
+
+## Resultado Final
+Nos passos que seguimos ao longo do tutorial pudemos experimentar vários recursos de programação para Android como *RecyclerView*(vamos parar de usar *ListView*, por favor), bibliotecas de terceiros para consumir uma API e carregamento de imagens e parte da estrutura de um aplicativo, contudo ainda tem muita coisa que você pode fazer para adiquirir mais conhecimento, por exemplo:
+
+ - Exibir mais informações dos Pokemons;
+ - Ordenar a ordem que os Pokemons aparecem na lista, (estão aparecendo na ordem que são baixados);
+ - Melhorar o layout na exibição dos detalhes;
+ - Utilizar o ***resource*** *GET pokemon/* para carregar o *RecyclerView* como uma *lista infinita* (no tutorial utilizamos o resource *GET pokemon/{id or name}/* para carregar a lista; e
+ - Disponibilizar isso de volta para a comunidade, assim podemos aprender todos junto.
+
+Agora aproveite seu novo APP
+
+![Resultado detalhe Pokemon](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/resultado-final.gif)
+
+<sub>**Figura 17**- Resultado Final</sub>
