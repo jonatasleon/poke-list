@@ -3,8 +3,9 @@ package com.jonatasleon.pokedex;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by jonatasleon on 14/09/16.
+ * Created by jonatasleon on 25/03/17.
  */
+
 public class PokeType {
 
     @SerializedName("name")

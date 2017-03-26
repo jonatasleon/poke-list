@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by jonatasleon on 12/09/16.
+ * Created by jonatasleon on 25/03/17.
  */
+
 public class Pokemon {
 
     @SerializedName("name")

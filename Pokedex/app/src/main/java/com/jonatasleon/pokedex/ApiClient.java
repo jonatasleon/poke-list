@@ -4,11 +4,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by jonatasleon on 14/09/16.
+ * Created by jonatasleon on 25/03/17.
  */
+
 public class ApiClient {
 
-    public static final String BASE_URL = "http://pokeapi.co/api/v1/";
+    public static final String BASE_URL = "http://pokeapi.co";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
@@ -18,6 +19,7 @@ public class ApiClient {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
+
         return retrofit;
     }
 }
