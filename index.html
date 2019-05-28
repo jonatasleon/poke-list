@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="None">
+  
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <title>Criando uma Pokedex! - Pokedex Android</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Criando uma Pokedex!";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="js/jquery-2.1.1.min.js" defer></script>
+  <script src="js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> Pokedex Android</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href=".">Criando uma Pokedex!</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#criando-uma-pokedex">Criando uma Pokedex!</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#criando-projeto-no-android-studio">Criando projeto no Android Studio</a></li>
+        
+            <li><a class="toctree-l3" href="#configurando-o-projeto">Configurando o projeto</a></li>
+        
+            <li><a class="toctree-l3" href="#criando-nossa-primeira-activity">Criando nossa primeira Activity</a></li>
+        
+            <li><a class="toctree-l3" href="#buscando-dados-na-pokeapi">Buscando dados na PokéAPI</a></li>
+        
+            <li><a class="toctree-l3" href="#carregando-imagens">Carregando imagens</a></li>
+        
+            <li><a class="toctree-l3" href="#abrindo-uma-nova-activity">Abrindo uma nova Activity</a></li>
+        
+            <li><a class="toctree-l3" href="#cores">Cores</a></li>
+        
+            <li><a class="toctree-l3" href="#resultado-final">Resultado Final</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">Pokedex Android</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Criando uma Pokedex!</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="criando-uma-pokedex">Criando uma Pokedex!</h1>
+<p>Essa apostila mostra o desenvolvimento passo-a-passo de um aplicação demo de um lista de Pokemons. A função principal do aplicativo será consumir a API <a href="https://pokeapi.co">PokéAPI</a>, que se trata de uma API sobre Pokemons destinada a fins educacionais e gratuita.</p>
+<p>O código desenvolvido neste tutorial está disponível no <a href="https://github.com/jonatasleon/poke-list">Github</a>. Fique a vontade para consultá-lo e se esse tutorial de ajudar, recomende aos seus colegas. <em>Gotta Catch 'Em All</em>!</p>
+<h2 id="criando-projeto-no-android-studio">Criando projeto no Android Studio</h2>
+<p>Ao abrir o Android Studio, uma tela de boas-vindas será exibida(Figura 1), clique em <em>Start a new Android Studio Project</em>.</p>
+<p><img alt="Tela Welcome" src="images/welcome.png" /></p>
+<p><sub><strong>Figura 1</strong> - Tela Welcome</sub></p>
+<p>Agora na tela de criação de um novo projeto(Figura 2), insira o nome da aplicação (<em>Application name</em>), um domínio(<em>Company Domain</em>), para exemplo coloque seu nome seguido de <em>.com</em>, e ao final escolha onde ficará a pasta do projeto(<em>Projeto Location</em>), clique em Next.</p>
+<p><img alt="Tela New Project" src="images/new-project.png" /></p>
+<p><sub><strong>Figura 2</strong> - Tela New Project</sub></p>
+<p>Como mostrado na Figura 3, deixe apenas selecionado a opção <em>Phone and Tablet</em>, com o <em>Minimum SDK</em> em <em>API 15: Android 4.0.3 (IceCreamSandwich)</em>, então clique em Next</p>
+<p><img alt="Tela Target Devices" src="images/target-devices.png" /></p>
+<p><sub><strong>Figura 3</strong> - Tela Target Devices</sub></p>
+<p>Selecione a opção <em>Add no activity</em>, como mostrado(Figura 4), então clique em <em>Finish</em></p>
+<p><img alt="Tela Add Activity" src="images/add-activity.png" /></p>
+<p><sub><strong>Figura 4</strong> - Tela Add Activity</sub></p>
+<p>Após isso, a estrutura de arquivos do seu projeto vai fica assim:</p>
+<p><img alt="Estrutura de arquivos" src="images/tree-files.png" /></p>
+<p><sub><strong>Figura 5</strong> - Estrutura de arquivos</sub></p>
+<p>Pronto, agora seu projeto está criado.</p>
+<h2 id="configurando-o-projeto">Configurando o projeto</h2>
+<p>Para construirmos estes aplicativo utilizaremos algumas ferramentas para facilitar o desenvolvimento, além de termos que configura-lo para realizar algumas tarefas.</p>
+<p>Como o aplicativo irá buscar as informações na internet, temos que informar que ele fará isso no arquivo <strong>AndroidManifest.xml</strong>. Abra o arquivo e adicione, dentro da tag <em>manifest</em>, o seguinte trecho de código:</p>
+<pre><code class="xml">&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;
+</code></pre>
+
+<p><sub><strong>Código 1</strong> - Permissão para internet</sub></p>
+<p>Abra o arquivo build.gradle e adicione as bibliotecas de design e recyclerview, elas oferecem suporte a dispositivos com versões do Android anteriores ao Android Nougat, adicione também as bibliotecas para parse de dados, <em>GSON</em> e a <em>Retrofit</em>.</p>
+<pre><code class="js">dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+
+    compile 'com.android.support:appcompat-v7:25.3.0'
+
+    // libs de compatibilidade
+    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
+
+    // retrofit, gson, picasso
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+}
+</code></pre>
+
+<p><sub><strong>Código 2</strong> - Adicionando as dependências</sub></p>
+<h2 id="criando-nossa-primeira-activity">Criando nossa primeira Activity</h2>
+<p>Agora que já fizemos o setup inicial, vamos criar nossa primeira Activity e assim já ter alguma tela para visualizarmos no emulador/celular</p>
+<p>Expanda a estrutura de visualização dos arquivos até exibir o nome do pacote, na imagem de exemplo(Figura 6) é <em>com.jonatasleon.pokedex</em>, então clique com o botão direito e vá em <em>New -&gt; Activity -&gt; Empty Activity</em>.</p>
+<p><img alt="Estrutura" src="images/package.png" /></p>
+<p><sub><strong>Figura 6</strong> - Estrutura de arquivos</sub></p>
+<p>Como na Figura 7, lembre-se de marcar a opção <em>Launcher Activity</em>, então clique em Finish</p>
+<p><img alt="Nova Activity" src="images/create-activity.png" /></p>
+<p><sub><strong>Figura 7</strong> - Nova Activity</sub></p>
+<p>Abra o arquivo <strong>activity_main.xml</strong> (<em>app/src/main/res/layout/activity_main.xml</em>) e mude para o modo de edição para o modo text, altere o componente ConstraintLayout e adicione um RecyclerView para que o arquivo fique assim:</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    app:layout_behavior=&quot;@string/appbar_scrolling_view_behavior&quot;
+    tools:showIn=&quot;@layout/activity_main&quot;
+    tools:context=&quot;com.jonatasleon.pokedex.MainActivity&quot;&gt;
+
+    &lt;android.support.v7.widget.RecyclerView
+        android:id=&quot;@+id/rv_pokemons&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;
+        android:scrollbars=&quot;vertical&quot; /&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre>
+
+<p><sub><strong>Código 3</strong> - Arquivo activity_main.xml</sub></p>
+<p>Voltando para o modo Design, é exibido uma prévia de como ficaria o layout.</p>
+<p><img alt="Preview" src="images/preview.png" /></p>
+<p><sub><strong>Figura 8</strong> - Prévia do Layout</sub></p>
+<p>Agora adicione uma nova classe, clique sobre o nome do pacote novamente, <em>New -&gt; Java Class</em>, coloque o nome da classe como <strong>Pokemon</strong> e clique em <em>OK</em>.</p>
+<p><img alt="Nova classe" src="images/new-class.png" /></p>
+<p><sub><strong>Figura 9</strong> - Nova classe</sub></p>
+<p>O Pokemon terá, por enquanto, dois atributos, <em>name</em> e <em>type</em>. Adicione dois construtores públicos, o primeiro sem paramêtros, o segundo contendo os atributos criados como paramêtro. Após isso, adicione getters e setters para cada atributo. O código final do arquivo <strong>Pokemon.java</strong> deve fica da seguinte forma:</p>
+<pre><code class="java">package com.jonatasleon.pokedex;
+
+public class Pokemon {
+
+    private String name;
+    private String type;
+
+    public Pokemon() {
+
+    }
+    public Pokemon(String name, String type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+}
+</code></pre>
+
+<p><sub><strong>Código 4</strong> - Pokemon.java</sub></p>
+<p>Agora, crie um novo layout. Clique com o botão direito sobre a pasta <strong>layout  </strong> então clique em <em>New &gt; Layout Resource File</em> (<em>Figura 10</em>)</p>
+<p><img alt="Pasta layout" src="images/layout-dir.png" /></p>
+<p><sub><strong>Figura 10</strong> - Pasta layout</sub></p>
+<p>Então coloque como nome <strong>pokemon_row</strong> e em <em>Root Element</em> digite <em>RelativeLayout</em>, aperte <em>OK</em></p>
+<p><img alt="Pokemon Row" src="images/add_pokemon_row.png" /></p>
+<p><sub><strong>Figura 11</strong> - Adiciona layout pokemon_row</sub></p>
+<p>Abra o arquivo <strong>pokemon_row.xml</strong> e deixe-o assim:</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:focusable=&quot;true&quot;
+    android:paddingLeft=&quot;16dp&quot;
+    android:paddingRight=&quot;16dp&quot;
+    android:paddingTop=&quot;10dp&quot;
+    android:paddingBottom=&quot;10dp&quot;
+    android:clickable=&quot;true&quot;
+    android:background=&quot;?android:attr/selectableItemBackground&quot;
+    android:orientation=&quot;vertical&quot;&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/tv_name&quot;
+        android:textSize=&quot;16sp&quot;
+        android:textStyle=&quot;bold&quot;
+        android:layout_alignParentTop=&quot;true&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot; /&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/tv_type&quot;
+        android:layout_below=&quot;@id/tv_name&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot; /&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre>
+
+<p><sub><strong>Código 5</strong> - Pokemon row layout</sub></p>
+<p>Agora crie uma class chamada <strong>PokemonAdapter</strong>, essa classe será feito a ponte entre os dados e o layout exibido pela activity, abra o arquivo <strong>PokemonAdapter.java</strong> e deixo assim:</p>
+<pre><code class="java">package com.jonatasleon.pokedex;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.List;
+
+public class PokemonAdapter extends RecyclerView.Adapter&lt;PokemonAdapter.PokeViewHolder&gt; {
+
+    private List&lt;Pokemon&gt; pokemonList;
+
+    public class PokeViewHolder extends RecyclerView.ViewHolder {
+        public TextView name, type;
+
+        public PokeViewHolder(View itemView) {
+            super(itemView);
+            name = (TextView) itemView.findViewById(R.id.tv_name);
+            type = (TextView) itemView.findViewById(R.id.tv_type);
+        }
+    }
+
+    public PokemonAdapter(List&lt;Pokemon&gt; pokemonList) {
+        this.pokemonList = pokemonList;
+    }
+
+    @Override
+    public PokeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View itemView = inflater.inflate(R.layout.pokemon_row, parent, false);
+
+        return new PokeViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(PokeViewHolder holder, int position) {
+        Pokemon pokemon = pokemonList.get(position);
+        holder.name.setText(pokemon.getName());
+        holder.type.setText(pokemon.getType());
+    }
+
+    @Override
+    public int getItemCount() {
+        return pokemonList.size();
+    }
+}
+</code></pre>
+
+<p><sub><strong>Código 5</strong> - PokemonAdapter.java</sub></p>
+<p>Abra o arquivo <strong>MainActivity.java</strong> e deixo modifique o método <em>onCreate</em>:</p>
+<pre><code class="java">  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.activity_main);
+
+      recyclerView = (RecyclerView) findViewById(R.id.rv_pokemons);
+
+      pokemonAdapter = new PokemonAdapter(pokemonList);
+
+      RecyclerView.LayoutManager layoutManager;
+      layoutManager = new LinearLayoutManager(getApplicationContext());
+
+      recyclerView.setLayoutManager(layoutManager);
+      recyclerView.setItemAnimator(new DefaultItemAnimator());
+      recyclerView.setAdapter(pokemonAdapter);
+  }
+</code></pre>
+
+<p><sub><strong>Código 6</strong> - Método onCreate</sub></p>
+<p>Agora o <em>RecyclerView</em> já está implementado, no entanto nenhuma informação é exibida, vamos criar um método que adicione algum dado. Dentro da classe <strong>MainActivity</strong> crie um método addData:</p>
+<pre><code class="java">private void addData() {
+  Pokemon poke;
+
+  poke = new Pokemon(&quot;Bulbasaur&quot;, &quot;Grama&quot;);
+  pokemonList.add(poke);
+
+  poke = new Pokemon(&quot;Charmander&quot;, &quot;Fogo&quot;);
+  pokemonList.add(poke);
+
+  poke = new Pokemon(&quot;Squirtle&quot;, &quot;Água&quot;);
+  pokemonList.add(poke);
+
+  pokemonAdapter.notifyDataSetChanged();
+}
+</code></pre>
+
+<p><sub><strong>Código 7</strong> - Método addData</sub></p>
+<p>O código da <strong>MainActivity</strong> deve ser algo como:</p>
+<pre><code class="java">package com.jonatasleon.pokedex;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+
+  List&lt;Pokemon&gt; pokemonList = new ArrayList&lt;&gt;();
+  RecyclerView recyclerView;
+  PokemonAdapter pokemonAdapter;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    recyclerView = (RecyclerView) findViewById(R.id.rv_pokemons);
+
+    pokemonAdapter = new PokemonAdapter(pokemonList);
+
+    RecyclerView.LayoutManager layoutManager;
+    layoutManager = new LinearLayoutManager(this);
+
+    recyclerView.setLayoutManager(layoutManager);
+    recyclerView.setItemAnimator(new DefaultItemAnimator());
+    recyclerView.setAdapter(pokemonAdapter);
+
+    addData();
+  }
+
+  private void addData() {
+    Pokemon poke;
+
+    poke = new Pokemon(&quot;Bulbasaur&quot;, &quot;Grama&quot;);
+    pokemonList.add(poke);
+
+    poke = new Pokemon(&quot;Charmander&quot;, &quot;Fogo&quot;);
+    pokemonList.add(poke);
+
+    poke = new Pokemon(&quot;Squirtle&quot;, &quot;Água&quot;);
+    pokemonList.add(poke);
+
+    pokemonAdapter.notifyDataSetChanged();
+  }
+}
+
+</code></pre>
+
+<p><sub><strong>Código 8</strong> - MainActivity completa</sub></p>
+<p>Ao executar o aplicativo, o resultado esperado seria uma lista com os 3 Pokemons adicionados no método addData.</p>
+<p><img alt="Resultado esperado" src="images/app_resultado_01.png" /></p>
+<p><sub><strong>Figura 12</strong> - Resultado Esperado</sub></p>
+<h2 id="buscando-dados-na-pokeapi">Buscando dados na PokéAPI</h2>
+<p>Agora vamos começar a trazer os dados diretamente da API</p>
+<p>Fazendo uma requisição no endereço <a href="http://pokeapi.co/api/v1/pokemon/1/">http://pokeapi.co/api/v1/pokemon/1/</a>, temos os dados do <em>Bulbasaur</em>, de todas a informações enviadas pela API, vamos utilizar o seguinte objeto como exemplo:</p>
+<pre><code class="json">{
+  &quot;attack&quot;: 49,
+  &quot;defense&quot;: 49,
+  &quot;height&quot;: &quot;7&quot;,
+  &quot;hp&quot;: 45,
+  &quot;name&quot;: &quot;Bulbasaur&quot;,
+  &quot;pkdx_id&quot;: 1,
+  &quot;speed&quot;: 45,
+  &quot;sprites&quot;: [
+    {
+      &quot;name&quot;: &quot;bulbasaur&quot;,
+      &quot;resource_uri&quot;: &quot;/api/v1/sprite/1/&quot;
+    },
+    {
+      &quot;name&quot;: &quot;bulbasaur&quot;,
+      &quot;resource_uri&quot;: &quot;/api/v1/sprite/2/&quot;
+    },
+    {
+      &quot;name&quot;: &quot;bulbasaur&quot;,
+      &quot;resource_uri&quot;: &quot;/api/v1/sprite/720/&quot;
+    }
+  ],
+  &quot;types&quot;: [
+    {
+      &quot;name&quot;: &quot;poison&quot;,
+      &quot;resource_uri&quot;: &quot;/api/v1/type/4/&quot;
+    },
+    {
+      &quot;name&quot;: &quot;grass&quot;,
+      &quot;resource_uri&quot;: &quot;/api/v1/type/12/&quot;
+    }
+  ],
+  &quot;weight&quot;: &quot;69&quot;
+}
+</code></pre>
+
+<p><sub><strong>Código 9</strong> - Objeto base</sub></p>
+<p>Para conseguirmos manipular os dados dentro do aplicativo, temos que criar classes que representem cada conjunto de dados dentro do objeto, então a partir deste objeto, antes de alterar a classe <em>Pokemon</em> identificamos a necessidade de criar duas novas classes, <em>PokeType</em> e <em>Sprite</em>:</p>
+<pre><code class="java">package com.jonatasleon.pokedex;
+
+import com.google.gson.annotations.SerializedName;
+
+public class PokeType {
+
+    @SerializedName(&quot;name&quot;)
+    private String name;
+
+    public PokeType(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+</code></pre>
+
+<p><sub><strong>Código 10</strong> - PokeType.java</sub></p>
+<p>Agora crie a classe <em>Sprite</em>, assim:</p>
+<pre><code class="java">package com.jonatasleon.pokedex;
+
+import com.google.gson.annotations.SerializedName;
+
+public class Sprite {
+
+    @SerializedName(&quot;name&quot;)
+    private String name;
+
+    @SerializedName(&quot;resource_uri&quot;)
+    private String resourceUri;
+
+    public Sprite(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getResourceUri() {
+        return resourceUri;
+    }
+
+    public void setResourceUri(String resourceUri) {
+        this.resourceUri = resourceUri;
+    }
+}
+
+</code></pre>
+
+<p><sub><strong>Código 11</strong> - Sprite.java</sub></p>
+<p>Utilizamos <em>annotations</em> para dizer onde cada atributo do objeto vindo da API será atribuído. Assim, para cada <em>@SerializedName(String)</em> estamos vinculando um valor da API a um atributo de nossas classes.</p>
+<p>As declarações dos atributos da classe Pokemon serão alteradas, consequentemente seus getters e setters também. Os atributos ficarão definidos assim(em caso de dúvida, veja o código completo <a href="https://github.com/jonatasleon/poke-list/blob/master/Pokedex/app/src/main/java/com/jonatasleon/pokedex/Pokemon.java">aqui</a>):</p>
+<pre><code class="java">package com.jonatasleon.pokedex;
+
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Pokemon {
+
+    @SerializedName(&quot;name&quot;)
+    private String name;
+
+    @SerializedName(&quot;attack&quot;)
+    private Integer attack;
+
+    @SerializedName(&quot;defense&quot;)
+    private Integer defense;
+
+    @SerializedName(&quot;height&quot;)
+    private String height;
+
+    @SerializedName(&quot;hp&quot;)
+    private Integer health;
+
+    @SerializedName(&quot;pkdx_id&quot;)
+    private Integer pokedexId;
+
+    @SerializedName(&quot;speed&quot;)
+    private Integer speed;
+
+    @SerializedName(&quot;weight&quot;)
+    private String weight;
+
+    @SerializedName(&quot;sprites&quot;)
+    private List&lt;Sprite&gt; sprites = new ArrayList&lt;&gt;();
+
+    @SerializedName(&quot;types&quot;)
+    private List&lt;PokeType&gt; pokeTypes = new ArrayList&lt;&gt;();
+
+    /*
+     * O construtor e os getters e setters aqui
+     */
+
+}
+</code></pre>
+
+<p><sub><strong>Código 12</strong> - Alterações em Pokemon.java</sub></p>
+<p>Neste momento, classes como MainActivity e PokemonAdapter podem estar apontando algum erro, não vamos nos preocupar com isso agora, isso se deve pela alteração que fizemos no model Pokemon.</p>
+<p>Criaremos agora nossa instância da Api: <strong>ApiClient.java</strong></p>
+<pre><code class="java">package com.jonatasleon.pokedex;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class ApiClient {
+
+    public static final String BASE_URL = &quot;http://pokeapi.co/&quot;;
+    private static Retrofit retrofit = null;
+
+    public static Retrofit getClient() {
+        if(retrofit == null) {
+            retrofit = new Retrofit.Builder()
+              .baseUrl(BASE_URL)
+              .addConverterFactory(GsonConverterFactory.create())
+              .build();
+        }
+        return retrofit;
+    }
+}
+</code></pre>
+
+<p><sub><strong>Código 13</strong> - ApiClient.java</sub></p>
+<p>Nossa <em>ApiClient</em> representa o cliente que fará todas as requisições na PokéAPI. Agora precisamos dizer ao <em>ApiClient</em>, onde ele deve buscar as informações, para isso, criaremos nossa interface <strong>ApiInterface</strong>.</p>
+<p>Para criar uma interface, siga os mesmos passos para criar uma classe, mas na tela de inserção do nome da classe, altere <em>Class</em> para <em>Interface</em>.</p>
+<p><img alt="class para interface" src="images/class-to-interface.png" /></p>
+<p><sub><strong>Figura 13</strong> - Criando interface</sub></p>
+<p>O código de ApiInterface.java ficará assim:</p>
+<pre><code class="java">package com.jonatasleon.pokedex;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+
+public interface ApiInterface {
+
+    @GET(&quot;api/v1/pokemon/{id}&quot;)
+    Call&lt;Pokemon&gt; getPokemon(@Path(&quot;id&quot;) int id);
+}
+
+</code></pre>
+
+<p><sub><strong>Código 14</strong> - ApiInterface.java</sub></p>
+<p>Com isso estamos dizendo que ao chamar o método <em>getPokemon(int)</em> estamos fazendo uma requisição <em>GET</em> (ver <strong><a href="https://pt.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9todos_de_solicita.C3.A7.C3.A3o">Métodos HTTP</a></strong>) no recurso <em>pokemon/{id}</em>, com o id que será passado como parâmetro.</p>
+<p>Agora vamos fazer que nossas requisições apareçam como uma lista de Pokemons no RecyclerView, também, como consequência, vamos corrigir os erros apontados em <em>MainActivity</em> e <em>PokemonAdapter</em>.</p>
+<p>Para isso, vamos criar um novo método que colocar todos os <em>names</em> de <em>PokeTypes</em> em uma única <em>String</em>. Abra o arquivo <em>Pokemon.java</em> e adicione o método <em>pokeTypesToString</em>:</p>
+<pre><code class="java">  /* arquivo Pokemon.js */
+  public String pokeTypesToString() {
+    String types = &quot;&quot;;
+    for (int i = 0; i &lt; pokeTypes.size(); i++) {
+        if(i &gt; 0)
+            types += &quot;, &quot;;
+        types += pokeTypes.get(i).getName();
+    }
+
+    return types;
+  }
+</code></pre>
+
+<p><sub><strong>Código 15</strong> - Método pokeTypesToString</sub></p>
+<p>Agora modifique o método <em>onBindViewHolder</em> na classe <em>PokemonAdapter</em></p>
+<pre><code class="java">  @Override
+  public void onBindViewHolder(PokeViewHolder holder, int position) {
+    Pokemon pokemon = pokemonList.get(position);
+    holder.name.setText(pokemon.getName());
+    holder.type.setText(pokemon.pokeTypesToString());
+  }
+</code></pre>
+
+<p><sub><strong>Código 16</strong> - Método onBindViewHolder</sub></p>
+<p>Agora temos modificar nosso método <em>addData</em> na classe <em>MainActivity</em>:</p>
+<pre><code class="java">  private void addData() {
+    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+    for(int i = 1; i &lt;= 30; i++) {
+      Call&lt;Pokemon&gt; call = apiService.getPokemon(i);
+      call.enqueue(new Callback&lt;Pokemon&gt;() {
+        @Override
+        public void onResponse(Call&lt;Pokemon&gt; call, Response&lt;Pokemon&gt; response) {
+            if(response.isSuccessful()) {
+                Pokemon pokemon = response.body();
+
+                pokemons.add(pokemon);
+                pokemonAdapter.notifyDataSetChanged();
+
+                Log.i(&quot;POKEMON&quot;, &quot;Name: &quot; + pokemon.getName());
+                Log.i(&quot;POKEMON&quot;, &quot;Attack: &quot; + pokemon.getAttack());
+                Log.i(&quot;POKEMON&quot;, &quot;Defense: &quot; + pokemon.getDefense());
+                Log.i(&quot;POKEMON&quot;, &quot;Health: &quot; + pokemon.getHealth());
+                Log.i(&quot;POKEMON&quot;, &quot;Height: &quot; + pokemon.getHeight());
+                Log.i(&quot;POKEMON&quot;, &quot;Weight: &quot; + pokemon.getWeight());
+
+            }
+        }
+
+        @Override
+        public void onFailure(Call&lt;Pokemon&gt; call, Throwable t) {
+        }
+      });
+    }
+  }
+</code></pre>
+
+<p><sub><strong>Código 17</strong> - Método addData</sub></p>
+<p>Execute o projeto, dependendo da disponibilidade da API, os dados dos 30 primeiros Pokemons irão ser exibidos em nosso <em>RecyclerView</em>, assim</p>
+<p><img alt="Pokemons API" src="images/lista-api.png" /></p>
+<p><sub><strong>Figura 14</strong> - Pokemons API</sub></p>
+<h2 id="carregando-imagens">Carregando imagens</h2>
+<p>Para carregar imagens no <em>RecyclerView</em> vamos utilizar a biblioteca <a href="http://square.github.io/picasso/">Picasso</a>. Sua dependência já foi adicionada ao projeto, observe a seguinte linha no arquivo <em>build.gradle</em>:</p>
+<pre><code class="js">  compile 'com.squareup.picasso:picasso:2.5.2'
+</code></pre>
+
+<p><sub><strong>Código 18</strong> - Picasso</sub></p>
+<p>Como vamos buscar as imagens a partir dos dados de uma <em>Sprite</em>, teremos que fazer um request no recurso <em><a href="http://pokeapi.co/docsv1/#sprites">sprite</a></em></p>
+<pre><code class="json">{
+  &quot;id&quot;: 1,
+  &quot;image&quot;: &quot;/media/img/1383395659.12.png&quot;,
+  &quot;name&quot;: &quot;Bulbasaur_blue_red&quot;
+}
+</code></pre>
+
+<p><sub><strong>Código 19</strong> - Resumo dos dados de um recurso <em>sprite</em></sub></p>
+<p>Assim, temos que ter uma classe que represente a resposta desta requisição, criamos então a classe <em>SpriteResponse</em></p>
+<pre><code class="java">import com.google.gson.annotations.SerializedName;
+
+public class SpriteResponse {
+
+    @SerializedName(&quot;id&quot;)
+    private Integer id;
+
+    @SerializedName(&quot;image&quot;)
+    private String image;
+
+    @SerializedName(&quot;name&quot;)
+    private String name;
+
+    public SpriteResponse(Integer id, String image, String name) {
+        this.id = id;
+        this.image = image;
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+</code></pre>
+
+<p><sub><strong>Código 20</strong> - Classe SpriteResponse</sub></p>
+<p>E modificamos nossa <em>ApiInterface</em>, adicionando o método <em>getSprite</em></p>
+<pre><code class="java">  @GET(&quot;{resource_uri}&quot;)
+  Call&lt;SpriteResponse&gt; getSprite(@Path(&quot;resource_uri&quot;) String resourceUri);
+</code></pre>
+
+<p><sub><strong>Código 21</strong> - getSprite em ApiInterface</sub></p>
+<p>Também temos que alterar o nosso layout de <strong>pokemon_row.xml</strong></p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:focusable=&quot;true&quot;
+    android:paddingLeft=&quot;16dp&quot;
+    android:paddingRight=&quot;16dp&quot;
+    android:paddingTop=&quot;10dp&quot;
+    android:paddingBottom=&quot;10dp&quot;
+    android:clickable=&quot;true&quot;
+    android:background=&quot;?android:attr/selectableItemBackground&quot;
+    android:orientation=&quot;vertical&quot;&gt;
+
+    &lt;ImageView
+        android:layout_width=&quot;64dp&quot;
+        android:layout_height=&quot;64dp&quot;
+        android:id=&quot;@+id/iv_pokemon&quot;
+        android:layout_alignParentTop=&quot;true&quot;
+        android:layout_alignParentLeft=&quot;true&quot;
+        android:layout_alignParentStart=&quot;true&quot; /&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/tv_name&quot;
+        android:textSize=&quot;16sp&quot;
+        android:textStyle=&quot;bold&quot;
+        android:layout_alignParentTop=&quot;true&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_toRightOf=&quot;@+id/iv_pokemon&quot;
+        android:layout_toEndOf=&quot;@+id/iv_pokemon&quot; /&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/tv_type&quot;
+        android:layout_below=&quot;@id/tv_name&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_toRightOf=&quot;@+id/iv_pokemon&quot;
+        android:layout_toEndOf=&quot;@+id/iv_pokemon&quot; /&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre>
+
+<p><sub><strong>Código 22</strong> - pokemon_row.xml</sub></p>
+<p>Agora adicionamos uma <em>ImageView</em> ao layout, então podemos mofificar nosso <em>PokemonAdapter</em> e seu <em>ViewHolder</em>:</p>
+<pre><code class="java">public class PokeViewHolder extends RecyclerView.ViewHolder {
+    public TextView name, type;
+    public ImageView ivPokemon;
+
+    public PokeViewHolder(View itemView) {
+        super(itemView);
+        name = (TextView) itemView.findViewById(R.id.tv_name);
+        type = (TextView) itemView.findViewById(R.id.tv_type);
+        ivPokemon = (ImageView) itemView.findViewById(R.id.iv_pokemon);
+    }
+}
+</code></pre>
+
+<p><sub><strong>Código 23</strong> - Classe PokeViewHolder</sub></p>
+<p>Agora vamos modificar o método <em>onBindViewHolder</em>:</p>
+<pre><code class="java">@Override
+public void onBindViewHolder(final PokeViewHolder holder, int position) {
+    Pokemon pokemon = pokemonList.get(position);
+    holder.name.setText(pokemon.getName());
+    holder.type.setText(pokemon.pokeTypesToString());
+
+    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+    Sprite sprite = pokemon.getSprites().get(0);
+    String spriteUrl = sprite.getResourceUri();
+
+    Call&lt;SpriteResponse&gt; call = apiService.getSprite(spriteUrl);
+    call.enqueue(new Callback&lt;SpriteResponse&gt;() {
+        @Override
+        public void onResponse(Call&lt;SpriteResponse&gt; call, Response&lt;SpriteResponse&gt; response) {
+            if(response.isSuccessful()){
+                SpriteResponse spriteResponse = response.body();
+                String image = &quot;http://pokeapi.co&quot; + spriteResponse.getImage();
+
+                Picasso.with(holder.ivPokemon.getContext())
+                        .load(image)
+                        .resize(64, 64)
+                        .into(holder.ivPokemon);
+            }
+        }
+
+        @Override
+        public void onFailure(Call&lt;SpriteResponse&gt; call, Throwable t) {
+
+        }
+    });
+}
+</code></pre>
+
+<p><sub><strong>Código 24</strong> - Refatoração onBindViewHolder</sub></p>
+<p>Um detalhe importante aqui, observe a linha:</p>
+<pre><code class="java">  String spriteUrl = sprite.getResourceUri();
+</code></pre>
+
+<p>Como <em>getResourceUri()</em> retorna algo como <em>/api/v1/sprite/1/</em> e nossa url base é <em>http://pokeapi.co/</em>, isso pode gerar uma <em>String</em> como <em>http://pokeapi.co//api/v1/sprite/1/</em>, assim gerando um erro em nossa requisição, para evitar isso, vamos refatorar nosso método <em>getResourceUri</em> na classe <em>Sprite</em>:</p>
+<pre><code class="java">/* Sprite.java */
+public String getResourceUri() {
+    return resourceUri.substring(1);
+}
+</code></pre>
+
+<p><sub><strong>Código 25</strong> - getResourceUri refatorada</sub></p>
+<p>Tudo ocorrendo corretamente, executando o projeto, temos os seguinte resultado:</p>
+<p><img alt="Resultado lista com imagens" src="images/recycler-images.png" /></p>
+<p><sub><strong>Figura 15</strong> - Resultado lista com imagens</sub></p>
+<h2 id="abrindo-uma-nova-activity">Abrindo uma nova Activity</h2>
+<p>Agora vamos crar uma uma activity que mostre informações mais detalhadas ao selecionarmos algum Pokemon. Crie uma nova activity chamada <em>DetailActivity</em>.</p>
+<p>Antes de modificarmos o layout de <em>DetailActivity</em>, criaremos a estrutura que realiza a transição de uma activity para outra. Crie uma classe chamada <em>RecyclerTouchListener</em>.</p>
+<pre><code class="java">public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+    private GestureDetector gestureDetector;
+    private ClickListener clickListener;
+
+
+    public interface ClickListener {
+        void onClick(View view, int position);
+
+        void onLongClick(View view, int position);
+    }
+
+    public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
+        this.clickListener = clickListener;
+        gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child != null &amp;&amp; clickListener != null) {
+                    clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        View child = rv.findChildViewUnder(e.getX(), e.getY());
+        if (child != null &amp;&amp; clickListener != null &amp;&amp; gestureDetector.onTouchEvent(e)) {
+            clickListener.onClick(child, rv.getChildPosition(child));
+        }
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+    }
+}
+</code></pre>
+
+<p><sub><strong>Código 26</strong> - Classe RecyclerTouchListener</sub></p>
+<p>Diferente do que acontece com a classe <em>ListView</em> é necessário implementar outros meios de capturar o clique em algum item da lista de um <em>RecyclerView</em>. Nossa recém-criada <em>RecyclerTouchListener</em> implementa a <em>interface</em> <strong>RecyclerView.OnItemTouchListener</strong>, onde através dela podemos capturar o toque em algum item da lista, no entanto, para facilitarmos a utilização desta classe, o construtor da <em>RecyclerTouchListener</em> pede uma implementação de <em>RecyclerTouchListener.ClickListener</em>, ficando mais simples capturarmos o clique.</p>
+<p>Agora volte para a <em>MainActivity</em> e  abaixo da linha <em>recyclerView.setAdapter(pokemonAdapter)</em>, adicione o seguinte trecho que captura o clique do botão inicia uma nova activity.</p>
+<pre><code class="java">recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+    @Override
+    public void onClick(View view, int position) {
+        Intent i = new Intent(MainActivity.this, DetailActivity.class);
+        i.putExtra(&quot;ID&quot;, pokemons.get(position).getPokedexId());
+        startActivity(i);
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+
+    }
+}));
+</code></pre>
+
+<p><sub><strong>Código 27</strong> - addOnItemTouchListener</sub></p>
+<p>Agora no arquivo <em>DetailActivity.java</em>, modifique o método <em>onCreate</em></p>
+<pre><code class="java">@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_detail);
+
+    Intent i = getIntent();
+    Toast.makeText(DetailActivity.this, i.getIntExtra(&quot;ID&quot;, 0) + &quot;&quot;, Toast.LENGTH_SHORT).show();
+}
+</code></pre>
+
+<p><sub><strong>Código 28</strong> - Método onCreate</sub></p>
+<p>Antes de executar seu código, garante que o layout <strong>activity_detail</strong> esteja da seguinte forma:</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:paddingBottom=&quot;@dimen/fab_margin&quot;
+    android:paddingLeft=&quot;@dimen/fab_margin&quot;
+    android:paddingRight=&quot;@dimen/fab_margin&quot;
+    android:paddingTop=&quot;@dimen/fab_margin&quot;
+    tools:context=&quot;com.jonatasleon.pokedex.DetailActivity&quot;&gt;
+&lt;/RelativeLayout&gt;
+</code></pre>
+
+<p><sub><strong>Código 29</strong> - <em>activity_detail</em> limpa</sub></p>
+<p>Agora o id do pokemon é enviado da <em>MainActivity</em> para a <em>DetailActivity</em>. Quando o método <em>onCreate</em> da <em>DetailActivity</em> for executado, ele vai recuperar o id enviado e o exibira na tela através de uma Toast exibida na tela.</p>
+<p>Agora que já conseguimos recuperar o id do pokemon selecionado, vamos alterar o arquivo de layout <em>detail_activity</em>, deixando-o assim:</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:paddingBottom=&quot;@dimen/fab_margin&quot;
+    android:paddingLeft=&quot;@dimen/fab_margin&quot;
+    android:paddingRight=&quot;@dimen/fab_margin&quot;
+    android:paddingTop=&quot;@dimen/fab_margin&quot;
+    tools:context=&quot;com.jonatasleon.pokedextutorial.DetailActivity&quot;&gt;
+
+    &lt;ImageView
+        android:layout_width=&quot;128dp&quot;
+        android:layout_height=&quot;128dp&quot;
+        android:id=&quot;@+id/iv_detail_pokemon&quot;
+        android:layout_alignParentTop=&quot;true&quot;
+        android:layout_alignParentLeft=&quot;true&quot;
+        android:layout_alignParentStart=&quot;true&quot;
+        android:layout_marginEnd=&quot;16dp&quot;
+        android:layout_marginRight=&quot;16dp&quot;
+        android:layout_marginBottom=&quot;16dp&quot;/&gt;
+
+    &lt;TextView
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:textAppearance=&quot;?android:attr/textAppearanceLarge&quot;
+        android:text=&quot;@null&quot;
+        android:id=&quot;@+id/tv_detail_name&quot;
+        android:layout_alignTop=&quot;@+id/iv_detail_pokemon&quot;
+        android:layout_toRightOf=&quot;@+id/iv_detail_pokemon&quot;
+        android:layout_toEndOf=&quot;@+id/iv_detail_pokemon&quot; /&gt;
+
+    &lt;TextView
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:textAppearance=&quot;?android:attr/textAppearanceMedium&quot;
+        android:text=&quot;@null&quot;
+        android:id=&quot;@+id/tv_detail_types&quot;
+        android:layout_below=&quot;@+id/tv_detail_name&quot;
+        android:layout_toRightOf=&quot;@+id/iv_detail_pokemon&quot;
+        android:layout_toEndOf=&quot;@+id/iv_detail_pokemon&quot; /&gt;
+
+    &lt;LinearLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_below=&quot;@+id/iv_detail_pokemon&quot;
+        android:layout_alignParentLeft=&quot;true&quot;
+        android:layout_alignParentStart=&quot;true&quot;
+        android:orientation=&quot;vertical&quot;
+        android:background=&quot;#6000&quot;&gt;
+
+        &lt;TextView
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:textAppearance=&quot;?android:attr/textAppearanceLargeInverse&quot;
+            android:text=&quot;@null&quot;
+            android:id=&quot;@+id/tv_detail_attack&quot;
+            android:layout_marginLeft=&quot;16dp&quot;
+            android:layout_marginStart=&quot;16dp&quot;
+            android:layout_marginBottom=&quot;8dp&quot;/&gt;
+
+        &lt;TextView
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:textAppearance=&quot;?android:attr/textAppearanceLargeInverse&quot;
+            android:text=&quot;@null&quot;
+            android:id=&quot;@+id/tv_detail_defense&quot;
+            android:layout_marginLeft=&quot;16dp&quot;
+            android:layout_marginStart=&quot;16dp&quot;
+            android:layout_marginBottom=&quot;8dp&quot; /&gt;
+
+        &lt;TextView
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:textAppearance=&quot;?android:attr/textAppearanceLargeInverse&quot;
+            android:text=&quot;@null&quot;
+            android:id=&quot;@+id/tv_detail_speed&quot;
+            android:layout_marginLeft=&quot;16dp&quot;
+            android:layout_marginStart=&quot;16dp&quot;
+            android:layout_marginBottom=&quot;8dp&quot;/&gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre>
+
+<p><sub><strong>Código 30</strong> - detailActivity</sub></p>
+<p>Dentro da classe <em>DetailActivity</em> declare os elementos criados no layout:</p>
+<pre><code class="java">public class DetailActivity extends AppCompatActivity {
+
+    private TextView tvName, tvTypes, tvAttack, tvDefense, tvSpeed;
+    private ImageView ivPokemon;
+
+    /* restante do código */
+}
+</code></pre>
+
+<p><sub><strong>Código 31</strong> - Declaração dos elementos</sub></p>
+<p>No método <em>onCreate</em>, vincule as varivéis declaradas aos seus respectivos elementos no layout:</p>
+<pre><code class="java">@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_detail);
+
+    tvName = (TextView) findViewById(R.id.tv_detail_name);
+    tvTypes = (TextView) findViewById(R.id.tv_detail_types);
+    tvAttack = (TextView) findViewById(R.id.tv_detail_attack);
+    tvDefense = (TextView) findViewById(R.id.tv_detail_defense);
+    tvSpeed = (TextView) findViewById(R.id.tv_detail_speed);
+    ivPokemon = (ImageView) findViewById(R.id.iv_detail_pokemon);
+
+    int id = getIntent().getIntExtra(&quot;ID&quot;, 0);
+    requestData(id);
+}
+</code></pre>
+
+<p><sub><strong>Código 32</strong> - Declaração dos elementos</sub></p>
+<p>Observe as duas últimas linha de código do método <em>onCreate</em>. Agora recuperamos o <strong>id</strong> do Pokemon passamos ele como paramêtro para o método <em>requestData</em>, vamos criar este método agora.</p>
+<p>Ainda no arquivo <em>DetailActivity.java</em>, crie o método para trazer os dados e também exibir uma imagem do Pokemon:</p>
+<pre><code class="java">private void requestData(int id) {
+        final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call&lt;Pokemon&gt; call = apiService.getPokemon(id);
+        call.enqueue(new Callback&lt;Pokemon&gt;() {
+            @Override
+            public void onResponse(Call&lt;Pokemon&gt; call, Response&lt;Pokemon&gt; response) {
+                Pokemon pokemon;
+
+                if(response.isSuccessful()) {
+                    pokemon = response.body();
+
+                    tvName.setText(pokemon.getName());
+                    tvTypes.setText(pokemon.pokeTypesToString());
+                    tvAttack.setText(pokemon.getAttack().toString());
+                    tvDefense.setText(pokemon.getDefense().toString());
+                    tvSpeed.setText(pokemon.getSpeed().toString());
+
+                    Call&lt;SpriteResponse&gt; callSprite;
+                    Sprite sprite = pokemon.getSprites().get(0);
+                    callSprite = apiService.getSprite(sprite.getResourceUri());
+                    callSprite.enqueue(new Callback&lt;SpriteResponse&gt;() {
+                        @Override
+                        public void onResponse(Call&lt;SpriteResponse&gt; call, Response&lt;SpriteResponse&gt; response) {
+                            SpriteResponse spriteResponse;
+                            if(response.isSuccessful()) {
+                                spriteResponse = response.body();
+                                Picasso.with(ivPokemon.getContext())
+                                        .load(&quot;http://pokeapi.co&quot; + spriteResponse.getImage())
+                                        .resize(128,128)
+                                        .into(ivPokemon);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call&lt;SpriteResponse&gt; call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call&lt;Pokemon&gt; call, Throwable t) {
+
+            }
+        });
+    }
+</code></pre>
+
+<p><sub><strong>Código 33</strong> - Método prepareData</sub></p>
+<p>Neste código encadeamos uma chamada dentro de outra, buscando o dados do <em>Pokemon</em>, assim que é recebido, fazer uma requisição dos dados da <em>Sprite</em> e então, quando recebemos a <em>URI</em> da imagem, utilizamos a <em>Picasso</em> para colocar a imagem dentro da imageView que temos no layout.</p>
+<p>O resultado pode ser algo como:</p>
+<p><img alt="Resultado detalhe Pokemon" src="images/detail-activity.png" /></p>
+<p><sub><strong>Figura 16</strong> - Resultado da activity com detalhes</sub></p>
+<h2 id="cores">Cores</h2>
+<p>Vamos alterar a cor padrão do aplicativo, só para que combine mais com a identidade gráfica de um "produto" voltado para o mundo Pokemon.</p>
+<p>Altere o arquivo <strong>colors.xml</strong> (<em>res &gt; values</em>):</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;resources&gt;
+    &lt;color name=&quot;colorPrimary&quot;&gt;#F44336&lt;/color&gt;
+    &lt;color name=&quot;colorPrimaryDark&quot;&gt;#D32F2F&lt;/color&gt;
+    &lt;color name=&quot;colorAccent&quot;&gt;#FFEB3B&lt;/color&gt;
+&lt;/resources&gt;
+</code></pre>
+
+<p><sub><strong>Código 34</strong> - Cores no arquivo <em>colors.xml</em></sub></p>
+<p>Essas cores fazem parte do estilo do <a href="https://material.io/guidelines/">Material Design</a>. Para facilitar a geração das cores, utilizei o <a href="https://www.materialpalette.com/red/yellow">Material Design Palette</a>.</p>
+<p>Como resultado, nossa toolbar foi alterada.</p>
+<p><img alt="Resultado detalhe Pokemon" src="images/toolbar-color.png" /></p>
+<p><sub><strong>Figura 17</strong>- Toolbar vermelha</sub></p>
+<h2 id="resultado-final">Resultado Final</h2>
+<p>Nos passos que seguimos ao longo do tutorial pudemos experimentar vários recursos de programação para Android como <em>RecyclerView</em>(vamos parar de usar <em>ListView</em>, por favor), bibliotecas de terceiros para consumir uma API e carregamento de imagens e parte da estrutura de um aplicativo, contudo ainda tem muita coisa que você pode fazer para adiquirir mais conhecimento, por exemplo:</p>
+<ul>
+<li>Exibir mais informações dos Pokemons;</li>
+<li>Ordenar a ordem que os Pokemons aparecem na lista, (estão aparecendo na ordem que são baixados);</li>
+<li>Melhorar o layout na exibição dos detalhes;</li>
+<li>Utilizar o <strong><em>resource</em></strong> <em>GET pokemon/</em> para carregar o <em>RecyclerView</em> como uma <em>lista infinita</em> (no tutorial utilizamos o resource <em>GET pokemon/{id or name}/</em> para carregar a lista; e</li>
+<li>Disponibilizar isso de volta para a comunidade, assim podemos aprender todos junto.</li>
+</ul>
+<p>Agora aproveite seu novo APP</p>
+<p><img alt="Resultado detalhe Pokemon" src="images/resultado-final.gif" /></p>
+<p><sub><strong>Figura 17</strong>- Resultado Final</sub></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '.';</script>
+    <script src="js/theme.js" defer></script>
+      <script src="search/main.js" defer></script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.0.4
+Build Date UTC : 2019-05-28 02:55:42
+-->
