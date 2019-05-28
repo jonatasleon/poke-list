@@ -7,31 +7,31 @@ O código desenvolvido neste tutorial está disponível no [Github](https://gith
 ## Criando projeto no Android Studio
 Ao abrir o Android Studio, uma tela de boas-vindas será exibida(Figura 1), clique em *Start a new Android Studio Project*.
 
-![Tela Welcome](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/welcome.png)
+![Tela Welcome](./images/welcome.png)
 
 <sub>**Figura 1** - Tela Welcome</sub>
 
 Agora na tela de criação de um novo projeto(Figura 2), insira o nome da aplicação (*Application name*), um domínio(*Company Domain*), para exemplo coloque seu nome seguido de *.com*, e ao final escolha onde ficará a pasta do projeto(*Projeto Location*), clique em Next.
 
-![Tela New Project](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/new-project.png)
+![Tela New Project](./images/new-project.png)
 
 <sub>**Figura 2** - Tela New Project</sub>
 
 Como mostrado na Figura 3, deixe apenas selecionado a opção *Phone and Tablet*, com o *Minimum SDK* em *API 15: Android 4.0.3 (IceCreamSandwich)*, então clique em Next
 
-![Tela Target Devices](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/target-devices.png)
+![Tela Target Devices](./images/target-devices.png)
 
 <sub>**Figura 3** - Tela Target Devices</sub>
 
 Selecione a opção *Add no activity*, como mostrado(Figura 4), então clique em *Finish*
 
-![Tela Add Activity](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/add-activity.png)
+![Tela Add Activity](./images/add-activity.png)
 
 <sub>**Figura 4** - Tela Add Activity</sub>
 
 Após isso, a estrutura de arquivos do seu projeto vai fica assim:
 
-![Estrutura de arquivos](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/tree-files.png)
+![Estrutura de arquivos](./images/tree-files.png)
 
 <sub>**Figura 5** - Estrutura de arquivos</sub>
 
@@ -77,13 +77,13 @@ Agora que já fizemos o setup inicial, vamos criar nossa primeira Activity e ass
 
 Expanda a estrutura de visualização dos arquivos até exibir o nome do pacote, na imagem de exemplo(Figura 6) é *com.jonatasleon.pokedex*, então clique com o botão direito e vá em *New -> Activity -> Empty Activity*.
 
-![Estrutura](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/package.png)
+![Estrutura](./images/package.png)
 
 <sub>**Figura 6** - Estrutura de arquivos</sub>
 
 Como na Figura 7, lembre-se de marcar a opção *Launcher Activity*, então clique em Finish
 
-![Nova Activity](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/create-activity.png)
+![Nova Activity](./images/create-activity.png)
 
 <sub>**Figura 7** - Nova Activity</sub>
 
@@ -112,13 +112,13 @@ Abra o arquivo **activity_main.xml** (*app/src/main/res/layout/activity_main.xml
 
 Voltando para o modo Design, é exibido uma prévia de como ficaria o layout.
 
-![Preview](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/preview.png)
+![Preview](./images/preview.png)
 
 <sub>**Figura 8** - Prévia do Layout</sub>
 
 Agora adicione uma nova classe, clique sobre o nome do pacote novamente, *New -> Java Class*, coloque o nome da classe como **Pokemon** e clique em *OK*.
 
-![Nova classe](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/new-class.png)
+![Nova classe](./images/new-class.png)
 
 <sub>**Figura 9** - Nova classe</sub>
 
@@ -160,13 +160,13 @@ public class Pokemon {
 
 Agora, crie um novo layout. Clique com o botão direito sobre a pasta **layout  ** então clique em *New > Layout Resource File* (*Figura 10*)
 
-![Pasta layout](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/layout-dir.png)
+![Pasta layout](./images/layout-dir.png)
 
 <sub>**Figura 10** - Pasta layout</sub>
 
 Então coloque como nome **pokemon_row** e em *Root Element* digite *RelativeLayout*, aperte *OK*
 
-![Pokemon Row](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/add_pokemon_row.png)
+![Pokemon Row](./images/add_pokemon_row.png)
 
 <sub>**Figura 11** - Adiciona layout pokemon_row</sub>
 
@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
 
 Ao executar o aplicativo, o resultado esperado seria uma lista com os 3 Pokemons adicionados no método addData.
 
-![Resultado esperado](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/app_resultado_01.png)
+![Resultado esperado](./images/app_resultado_01.png)
 
 <sub>**Figura 12** - Resultado Esperado</sub>
 
@@ -551,7 +551,7 @@ Nossa *ApiClient* representa o cliente que fará todas as requisições na Poké
 
 Para criar uma interface, siga os mesmos passos para criar uma classe, mas na tela de inserção do nome da classe, altere *Class* para *Interface*.
 
-![class para interface](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/class-to-interface.png)
+![class para interface](./images/class-to-interface.png)
 
 <sub>**Figura 13** - Criando interface</sub>
 
@@ -640,7 +640,7 @@ Agora temos modificar nosso método *addData* na classe *MainActivity*:
 
 Execute o projeto, dependendo da disponibilidade da API, os dados dos 30 primeiros Pokemons irão ser exibidos em nosso *RecyclerView*, assim
 
-![Pokemons API](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/lista-api.png)
+![Pokemons API](./images/lista-api.png)
 
 <sub>**Figura 14** - Pokemons API</sub>
 
@@ -834,7 +834,7 @@ public String getResourceUri() {
 
 Tudo ocorrendo corretamente, executando o projeto, temos os seguinte resultado:
 
-![Resultado lista com imagens](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/recycler-images.png)
+![Resultado lista com imagens](./images/recycler-images.png)
 
 <sub>**Figura 15** - Resultado lista com imagens</sub>
 
@@ -1127,7 +1127,7 @@ Neste código encadeamos uma chamada dentro de outra, buscando o dados do *Pokem
 
 O resultado pode ser algo como:
 
-![Resultado detalhe Pokemon](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/detail-activity.png)
+![Resultado detalhe Pokemon](./images/detail-activity.png)
 
 <sub>**Figura 16** - Resultado da activity com detalhes</sub>
 
@@ -1152,7 +1152,7 @@ Essas cores fazem parte do estilo do [Material Design](https://material.io/guide
 
 Como resultado, nossa toolbar foi alterada.
 
-![Resultado detalhe Pokemon](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/toolbar-color.png)
+![Resultado detalhe Pokemon](./images/toolbar-color.png)
 
 <sub>**Figura 17**- Toolbar vermelha</sub>
 
@@ -1167,6 +1167,6 @@ Nos passos que seguimos ao longo do tutorial pudemos experimentar vários recurs
 
 Agora aproveite seu novo APP
 
-![Resultado detalhe Pokemon](https://raw.githubusercontent.com/jonatasleon/poke-list/master/images/resultado-final.gif)
+![Resultado detalhe Pokemon](./images/resultado-final.gif)
 
 <sub>**Figura 17**- Resultado Final</sub>
